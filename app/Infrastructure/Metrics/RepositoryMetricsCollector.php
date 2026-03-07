@@ -2,31 +2,59 @@
 
 namespace App\Infrastructure\Metrics;
 
+use App\Infrastructure\Stack\StackDetector;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class RepositoryMetricsCollector
 {
+    private StackDetector $stackDetector;
+
+    public function __construct(StackDetector $stackDetector)
+    {
+        $this->stackDetector = $stackDetector;
+    }
+
     public function collect(string $path): array
     {
         $files = $this->collectFiles($path);
         $directories = $this->collectDirectories($path);
-
+        $totalSize = $this->calculateTotalSize($files);
+        $extensions = $this->detectLanguages($files);
+        $hasReadme = $this->detectReadme($files);
+        $hasDocs = $this->detectDocs($path);
+        $testFiles = $this->detectTests($files);
         $dependencyFiles = $this->detectDependencyFiles($path);
         $stackSignals = $this->detectStack($path, $dependencyFiles);
 
         return [
             'total_files' => $files->count(),
             'total_directories' => $directories->count(),
-            'total_size_bytes' => $this->calculateTotalSize($files),
-            'total_size_human' => $this->formatBytes($this->calculateTotalSize($files)),
-            'languages' => $this->detectLanguages($files),
-            'has_readme' => $this->detectReadme($files),
-            'has_docs' => $this->detectDocs($path),
-            'test_files_count' => $this->detectTests($files),
+            'total_size_bytes' => $totalSize,
+            'total_size_human' => $this->formatBytes($totalSize),
+            'languages' => $extensions,
+            'language_distribution' => $this->calculateLanguageDistribution(
+                $extensions,
+                $files->count()
+            ),
+            'has_readme' => $hasReadme,
+            'has_docs' => $hasDocs,
+
+            'test_files_count' => $testFiles,
+            'test_ratio' => $this->calculateTestRatio(
+                $testFiles,
+                $files->count()
+            ),
             'dependency_files' => $dependencyFiles,
             'stack_signals' => $stackSignals,
-            'top_level_directories' => $this->detectTopLevelDirectories($path),
+            'directory_tree' => $this->buildDirectoryTree($path),
+            'max_directory_depth' => $this->calculateMaxDepth($path),
+            'avg_files_per_directory' => $this->calculateAvgFilesPerDirectory(
+                $files->count(),
+                $directories->count()
+            ),
+            'largest_directories' => $this->findLargestDirectories($path),
+            'largest_files' => $this->findLargestFiles($files),
         ];
     }
 
@@ -67,8 +95,7 @@ class RepositoryMetricsCollector
 
     private function detectReadme($files): bool
     {
-        return $files->contains(fn ($file) => Str::startsWith(strtolower($file->getFilename()), 'readme')
-        );
+        return $files->contains(fn ($file) => Str::startsWith(strtolower($file->getFilename()), 'readme'));
     }
 
     private function detectDocs(string $path): bool
@@ -109,24 +136,42 @@ class RepositoryMetricsCollector
 
     private function detectStack(string $path, array $dependencyFiles): array
     {
-        return [
-            'laravel' => File::exists($path.'/artisan') && File::exists($path.'/routes/web.php'),
-            'symfony' => File::exists($path.'/bin/console'),
-            'react' => $this->fileContains($path.'/package.json', ['react']),
-            'vue' => $this->fileContains($path.'/package.json', ['vue']),
-            'angular' => File::exists($path.'/angular.json'),
-            'python' => $dependencyFiles['requirements.txt'] || $dependencyFiles['pyproject.toml'],
-            'node' => $dependencyFiles['package.json'],
-        ];
+        return $this->stackDetector->detect($path, $dependencyFiles);
     }
 
-    private function detectTopLevelDirectories(string $path): array
+    private function buildDirectoryTree(string $path): array
     {
-        return collect(File::directories($path))
-            ->map(fn ($dir) => basename($dir))
-            ->filter(fn ($dir) => ! in_array($dir, ['.git', 'vendor', 'node_modules']))
-            ->values()
-            ->all();
+        $ignored = [
+            '.git',
+            'vendor',
+            'node_modules',
+            'storage',
+            'bootstrap/cache',
+        ];
+
+        return $this->scanDirectory($path, $ignored);
+    }
+
+    private function scanDirectory(string $path, array $ignored, int $depth = 0): array
+    {
+        if ($depth > 3) {
+            return [];
+        }
+
+        $tree = [];
+
+        foreach (File::directories($path) as $directory) {
+
+            $name = basename($directory);
+
+            if (in_array($name, $ignored)) {
+                continue;
+            }
+
+            $tree[$name] = $this->scanDirectory($directory, $ignored, $depth + 1);
+        }
+
+        return $tree;
     }
 
     private function fileContains(string $filePath, array $needles): bool
@@ -155,5 +200,76 @@ class RepositoryMetricsCollector
         }
 
         return round($bytes, 2).' '.$units[$i];
+    }
+
+    private function calculateLanguageDistribution(array $languages, int $totalFiles): array
+    {
+        $distribution = [];
+
+        foreach ($languages as $language => $count) {
+            $distribution[] = [
+                'language' => $language,
+                'percent' => round(($count / max($totalFiles, 1)) * 100, 2),
+            ];
+        }
+
+        usort($distribution, fn ($a, $b) => $b['percent'] <=> $a['percent']);
+
+        return $distribution;
+    }
+
+    private function calculateTestRatio(int $testFiles, int $totalFiles): float
+    {
+        return round(($testFiles / max($totalFiles, 1)) * 100, 2);
+    }
+
+    private function calculateAvgFilesPerDirectory(int $files, int $directories): float
+    {
+        return round($files / max($directories, 1), 2);
+    }
+
+    private function calculateMaxDepth(string $path, int $depth = 0): int
+    {
+        $maxDepth = $depth;
+
+        foreach (File::directories($path) as $directory) {
+            $maxDepth = max($maxDepth, $this->calculateMaxDepth($directory, $depth + 1));
+        }
+
+        return $maxDepth;
+    }
+
+    private function findLargestDirectories(string $path): array
+    {
+        $directories = [];
+
+        foreach (File::directories($path) as $directory) {
+            $name = basename($directory);
+            $count = count(File::allFiles($directory));
+            $directories[$name] = $count;
+        }
+
+        arsort($directories);
+
+        return array_slice($directories, 0, 5, true);
+    }
+
+    private function findLargestFiles($files): array
+    {
+        $largest = [];
+
+        foreach ($files as $file) {
+            try {
+                $lines = count(file($file->getPathname()));
+            } catch (\Throwable) {
+                $lines = 0;
+            }
+
+            $largest[$file->getFilename()] = $lines;
+        }
+
+        arsort($largest);
+
+        return array_slice($largest, 0, 5, true);
     }
 }
