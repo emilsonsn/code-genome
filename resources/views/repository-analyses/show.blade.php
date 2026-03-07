@@ -28,62 +28,135 @@
         </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
-            <i class="fa-solid fa-file-code text-indigo-400 text-3xl"></i>
-            <div>
-                <p class="text-slate-400 text-sm">Files</p>
-                <p class="text-3xl font-bold">{{ $analysis->metrics['total_files'] }}</p>
+    @if (!empty($analysis->metrics['github']))
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-10">
+        <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+            <i class="fa-brands fa-github text-white"></i>
+            GitHub Stats
+        </h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-star text-yellow-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Stars</p>
+                    <p class="text-2xl font-bold">{{ number_format($analysis->metrics['github']['stars'] ?? 0) }}</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-code-fork text-purple-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Forks</p>
+                    <p class="text-2xl font-bold">{{ number_format($analysis->metrics['github']['forks'] ?? 0) }}</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-eye text-blue-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Watchers</p>
+                    <p class="text-2xl font-bold">{{ number_format($analysis->metrics['github']['watchers'] ?? 0) }}</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-circle-exclamation text-orange-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Open Issues</p>
+                    <p class="text-2xl font-bold">{{ number_format($analysis->metrics['github']['open_issues'] ?? 0) }}</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-users text-emerald-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Contributors</p>
+                    <p class="text-2xl font-bold">{{ number_format($analysis->metrics['github']['contributors_count'] ?? 0) }}</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-code-branch text-pink-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Default Branch</p>
+                    <p class="text-xl font-bold">{{ $analysis->metrics['github']['default_branch'] ?? 'main' }}</p>
+                </div>
             </div>
         </div>
+    </div>
+    @endif
 
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
-            <i class="fa-solid fa-folder-tree text-yellow-400 text-3xl"></i>
-            <div>
-                <p class="text-slate-400 text-sm">Folders</p>
-                <p class="text-3xl font-bold">{{ $analysis->metrics['total_directories'] }}</p>
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-10">
+        <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-chart-simple text-indigo-400"></i>
+            Repository Overview
+        </h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-file-code text-indigo-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Files</p>
+                    <p class="text-2xl font-bold">{{ $analysis->metrics['total_files'] }}</p>
+                </div>
             </div>
-        </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
-            <i class="fa-solid fa-database text-cyan-400 text-3xl"></i>
-            <div>
-                <p class="text-slate-400 text-sm">Size</p>
-                <p class="text-3xl font-bold">{{ $analysis->metrics['total_size_human'] }}</p>
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-folder-tree text-yellow-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Folders</p>
+                    <p class="text-2xl font-bold">{{ $analysis->metrics['total_directories'] }}</p>
+                </div>
             </div>
-        </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
-            <i class="fa-solid fa-vial text-green-400 text-3xl"></i>
-            <div>
-                <p class="text-slate-400 text-sm">Tests</p>
-                <p class="text-3xl font-bold">{{ $analysis->metrics['test_files_count'] }}</p>
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-database text-cyan-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Size</p>
+                    <p class="text-2xl font-bold">{{ $analysis->metrics['total_size_human'] }}</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-vial text-green-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Tests</p>
+                    <p class="text-2xl font-bold">{{ $analysis->metrics['test_files_count'] }}</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
-            <i class="fa-solid fa-layer-group text-purple-400 text-2xl"></i>
-            <div>
-                <p class="text-slate-400 text-sm">Max Depth</p>
-                <p class="text-3xl font-bold mt-1">{{ $analysis->metrics['max_directory_depth'] }}</p>
-            </div>
-        </div>
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-10">
+        <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-sitemap text-purple-400"></i>
+            Structure Metrics
+        </h2>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
-            <i class="fa-solid fa-folder-open text-orange-400 text-2xl"></i>
-            <div>
-                <p class="text-slate-400 text-sm">Avg Files per Folder</p>
-                <p class="text-3xl font-bold mt-1">{{ $analysis->metrics['avg_files_per_directory'] }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-layer-group text-purple-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Max Depth</p>
+                    <p class="text-2xl font-bold">{{ $analysis->metrics['max_directory_depth'] }}</p>
+                </div>
             </div>
-        </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
-            <i class="fa-solid fa-flask text-green-400 text-2xl"></i>
-            <div>
-                <p class="text-slate-400 text-sm">Test Coverage</p>
-                <p class="text-3xl font-bold mt-1">{{ $analysis->metrics['test_ratio'] }}%</p>
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-folder-open text-orange-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Avg Files per Folder</p>
+                    <p class="text-2xl font-bold">{{ $analysis->metrics['avg_files_per_directory'] }}</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-flask text-green-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Test Coverage</p>
+                    <p class="text-2xl font-bold">{{ $analysis->metrics['test_ratio'] }}%</p>
+                </div>
             </div>
         </div>
     </div>
@@ -253,7 +326,7 @@
 
         <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
             <i class="fa-solid fa-folder-tree text-yellow-400"></i>
-            Project Structure
+            Project Structure (depth 3)
         </h2>
 
         <div class="space-y-2">
