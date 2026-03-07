@@ -25,6 +25,19 @@
 
 ---
 
+<p align="center">
+  <img height="783" alt="image" src="https://github.com/user-attachments/assets/721e1693-711f-4c48-88b9-caa6e5a17953" width="49%" />
+    <img height="782" alt="image" src="https://github.com/user-attachments/assets/e907b668-baa5-4ef0-a0c2-2ad39cb70126" width="49%" />
+</p>
+
+<p align="center">
+  <img width="49%" height="776" alt="image" src="https://github.com/user-attachments/assets/37c0b970-d936-4648-b552-50791576ecb4" />
+
+<img width="49%" height="777" alt="image" src="https://github.com/user-attachments/assets/a58f6800-13bc-4451-a3ae-c6ac64c5dfb4" />
+</p>
+
+---
+
 ## 📖 Overview
 
 Modern software repositories contain valuable signals about code quality, architecture, and maintainability. However, extracting these signals manually is time-consuming and error-prone.
