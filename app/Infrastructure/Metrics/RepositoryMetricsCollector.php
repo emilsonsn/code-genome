@@ -230,10 +230,44 @@ class RepositoryMetricsCollector
 
     private function calculateMaxDepth(string $path, int $depth = 0): int
     {
+        if (! File::isDirectory($path)) {
+            return $depth;
+        }
+
+        $ignored = [
+            '.git',
+            'node_modules',
+            'vendor',
+            'storage',
+            'bootstrap/cache',
+            'public/build',
+            'fonts',
+        ];
+
         $maxDepth = $depth;
 
-        foreach (File::directories($path) as $directory) {
-            $maxDepth = max($maxDepth, $this->calculateMaxDepth($directory, $depth + 1));
+        try {
+
+            foreach (File::directories($path) as $directory) {
+
+                $name = basename($directory);
+
+                if (in_array($name, $ignored, true)) {
+                    continue;
+                }
+
+                if (! File::isDirectory($directory)) {
+                    continue;
+                }
+
+                $maxDepth = max(
+                    $maxDepth,
+                    $this->calculateMaxDepth($directory, $depth + 1)
+                );
+            }
+
+        } catch (\Throwable) {
+            return $maxDepth;
         }
 
         return $maxDepth;
