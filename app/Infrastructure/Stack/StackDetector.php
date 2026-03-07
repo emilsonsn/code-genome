@@ -114,6 +114,16 @@ class StackDetector
             && $this->fileContainsAny($path, 'Microsoft.AspNetCore');
     }
 
+    private function detectHtml(string $path): bool
+    {
+        return $this->hasExtension($path, ['html', 'htm']);
+    }
+
+    private function detectCss(string $path): bool
+    {
+        return $this->hasExtension($path, ['css', 'scss', 'sass']);
+    }
+
     private function packageJsonHas(string $path, string $needle): bool
     {
         return $this->fileContains($path.'/package.json', $needle);

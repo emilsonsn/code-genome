@@ -21,6 +21,8 @@ enum RepositoryStack: string
     case Nest = 'nestjs';
     case DotNet = 'dotnet';
     case AspNet = 'aspnet';
+    case Html = 'html';
+    case Css = 'css';
 
     public function label(): string
     {
@@ -42,6 +44,8 @@ enum RepositoryStack: string
             self::Nest => 'NestJS',
             self::DotNet => '.NET',
             self::AspNet => 'ASP.NET',
+            self::Html => 'HTML',
+            self::Css => 'CSS',
         };
     }
 
@@ -65,6 +69,8 @@ enum RepositoryStack: string
             self::Nest => 'fa-solid fa-cubes',
             self::DotNet => 'fa-solid fa-code',
             self::AspNet => 'fa-solid fa-globe',
+            self::Html => 'fa-solid fa-code',
+            self::Css => 'fa-solid fa-paint-brush',
         };
     }
 
@@ -72,28 +78,31 @@ enum RepositoryStack: string
     {
         return match ($this) {
             self::Laravel,
-            self::Symfony => ['php'],
+            self::Symfony => ['php', 'html', 'css', 'scss'],
 
             self::React,
             self::Node,
             self::Express,
-            self::Next => ['js', 'jsx', 'ts', 'tsx'],
+            self::Next => ['js', 'jsx', 'ts', 'tsx', 'css', 'scss'],
 
             self::Vue,
-            self::Nuxt => ['js', 'ts', 'vue'],
+            self::Nuxt => ['js', 'ts', 'vue', 'css', 'scss'],
 
             self::Angular,
-            self::Nest => ['ts'],
+            self::Nest => ['ts', 'html', 'css', 'scss'],
 
             self::Python,
             self::Django,
             self::Flask,
-            self::FastApi => ['py'],
+            self::FastApi => ['py', 'html', 'css'],
 
-            self::Spring => ['java', 'kt'],
+            self::Spring => ['java', 'kt', 'html', 'css'],
 
             self::DotNet,
-            self::AspNet => ['cs'],
+            self::AspNet => ['cs', 'html', 'css'],
+            self::Html => ['html'],
+            self::Css => ['css', 'scss'],
+            default => [],
         };
     }
 
@@ -117,6 +126,8 @@ enum RepositoryStack: string
             self::Nest => 'detectNest',
             self::DotNet => 'detectDotNet',
             self::AspNet => 'detectAspNet',
+            self::Html => 'detectHtml',
+            self::Css => 'detectCss',
         };
     }
 }

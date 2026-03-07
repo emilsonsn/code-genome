@@ -209,14 +209,16 @@ class RepositoryMetricsCollector
         return round($bytes, 2).' '.$units[$i];
     }
 
-    private function calculateLanguageDistribution(array $languages, int $totalFiles): array
+    private function calculateLanguageDistribution(array $languages): array
     {
         $distribution = [];
+
+        $totalLanguageFiles = array_sum($languages);
 
         foreach ($languages as $language => $count) {
             $distribution[] = [
                 'language' => $language,
-                'percent' => round(($count / max($totalFiles, 1)) * 100, 2),
+                'percent' => round(($count / max($totalLanguageFiles, 1)) * 100, 2),
             ];
         }
 
