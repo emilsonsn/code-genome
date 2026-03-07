@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
     <div class="max-w-4xl mx-auto px-6 py-20">
         <div class="text-center mb-12">
             <h1 class="text-5xl font-bold mb-4">Code Genome</h1>
-            <p class="text-slate-300 text-lg">Cole a URL do repositório e veja o DNA visual do projeto</p>
+            <p class="text-slate-300 text-lg">Paste the repository URL and see the visual DNA of the project</p>
         </div>
 
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
@@ -18,7 +18,7 @@
                 @csrf
 
                 <div>
-                    <label class="block mb-2 text-sm text-slate-300">URL do repositório</label>
+                    <label class="block mb-2 text-sm text-slate-300">Repository URL</label>
                     <input
                         type="url"
                         name="repository_url"
@@ -32,7 +32,7 @@
                 </div>
 
                 <button class="w-full bg-indigo-600 hover:bg-indigo-500 transition rounded-xl py-4 font-semibold">
-                    Analisar repositório
+                    Analyze Repository
                 </button>
             </form>
         </div>

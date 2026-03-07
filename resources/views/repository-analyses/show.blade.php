@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -24,7 +24,7 @@
 
         <a href="{{ route('repository-analyses.index') }}"
            class="bg-slate-800 hover:bg-slate-700 px-5 py-3 rounded-xl">
-            Nova análise
+            New Analysis
         </a>
     </div>
 
@@ -32,7 +32,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
             <i class="fa-solid fa-file-code text-indigo-400 text-3xl"></i>
             <div>
-                <p class="text-slate-400 text-sm">Arquivos</p>
+                <p class="text-slate-400 text-sm">Files</p>
                 <p class="text-3xl font-bold">{{ $analysis->metrics['total_files'] }}</p>
             </div>
         </div>
@@ -40,7 +40,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
             <i class="fa-solid fa-folder-tree text-yellow-400 text-3xl"></i>
             <div>
-                <p class="text-slate-400 text-sm">Pastas</p>
+                <p class="text-slate-400 text-sm">Folders</p>
                 <p class="text-3xl font-bold">{{ $analysis->metrics['total_directories'] }}</p>
             </div>
         </div>
@@ -48,7 +48,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
             <i class="fa-solid fa-database text-cyan-400 text-3xl"></i>
             <div>
-                <p class="text-slate-400 text-sm">Tamanho</p>
+                <p class="text-slate-400 text-sm">Size</p>
                 <p class="text-3xl font-bold">{{ $analysis->metrics['total_size_human'] }}</p>
             </div>
         </div>
@@ -56,7 +56,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
             <i class="fa-solid fa-vial text-green-400 text-3xl"></i>
             <div>
-                <p class="text-slate-400 text-sm">Testes</p>
+                <p class="text-slate-400 text-sm">Tests</p>
                 <p class="text-3xl font-bold">{{ $analysis->metrics['test_files_count'] }}</p>
             </div>
         </div>
@@ -66,7 +66,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
             <i class="fa-solid fa-layer-group text-purple-400 text-2xl"></i>
             <div>
-                <p class="text-slate-400 text-sm">Profundidade máxima</p>
+                <p class="text-slate-400 text-sm">Max Depth</p>
                 <p class="text-3xl font-bold mt-1">{{ $analysis->metrics['max_directory_depth'] }}</p>
             </div>
         </div>
@@ -74,7 +74,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
             <i class="fa-solid fa-folder-open text-orange-400 text-2xl"></i>
             <div>
-                <p class="text-slate-400 text-sm">Média de arquivos por pasta</p>
+                <p class="text-slate-400 text-sm">Avg Files per Folder</p>
                 <p class="text-3xl font-bold mt-1">{{ $analysis->metrics['avg_files_per_directory'] }}</p>
             </div>
         </div>
@@ -82,7 +82,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex items-center gap-4">
             <i class="fa-solid fa-flask text-green-400 text-2xl"></i>
             <div>
-                <p class="text-slate-400 text-sm">Cobertura de testes</p>
+                <p class="text-slate-400 text-sm">Test Coverage</p>
                 <p class="text-3xl font-bold mt-1">{{ $analysis->metrics['test_ratio'] }}%</p>
             </div>
         </div>
@@ -92,7 +92,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
             <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
                 <i class="fa-solid fa-dna text-indigo-400"></i>
-                DNA do projeto
+                Project DNA
             </h2>
 
             @foreach ($analysis->metrics['scores'] as $label => $value)
@@ -115,7 +115,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
             <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
                 <i class="fa-solid fa-microchip text-emerald-400"></i>
-                Sinais de stack
+                Stack Signals
             </h2>
 
             <div class="grid grid-cols-2 gap-3">
@@ -139,7 +139,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
             <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
                 <i class="fa-solid fa-folder-open text-yellow-400"></i>
-                Maiores diretórios
+                Largest Directories
             </h2>
 
             @foreach ($analysis->metrics['largest_directories'] as $dir => $count)
@@ -149,7 +149,7 @@
                         {{ $dir }}
                     </span>
 
-                    <span>{{ $count }} arquivos</span>
+                    <span>{{ $count }} files</span>
                 </div>
             @endforeach
         </div>
@@ -157,7 +157,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
             <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
                 <i class="fa-solid fa-file-lines text-cyan-400"></i>
-                Maiores arquivos
+                Largest Files
             </h2>
 
             @foreach ($analysis->metrics['largest_files'] as $file => $lines)
@@ -167,7 +167,7 @@
                         {{ $file }}
                     </span>
 
-                    <span>{{ $lines }} linhas</span>
+                    <span>{{ $lines }} lines</span>
                 </div>
             @endforeach
         </div>
@@ -177,7 +177,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
             <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
                 <i class="fa-solid fa-code text-cyan-400"></i>
-                Linguagens
+                Languages
             </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -203,7 +203,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
             <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
                 <i class="fa-solid fa-cubes text-purple-400"></i>
-                Dependências e Documentação
+                Dependencies & Documentation
             </h2>
 
             <div class="space-y-3">
@@ -253,7 +253,7 @@
 
         <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
             <i class="fa-solid fa-folder-tree text-yellow-400"></i>
-            Estrutura do projeto
+            Project Structure
         </h2>
 
         <div class="space-y-2">

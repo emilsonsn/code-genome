@@ -25,7 +25,7 @@ class GitRepositoryCloner
         ]);
 
         if ($result->failed()) {
-            throw new RuntimeException('Falha ao clonar repositório');
+            throw new RuntimeException('Failed to clone repository');
         }
 
         return $path;
