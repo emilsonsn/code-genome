@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Genome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-white min-h-screen">
+    <div class="max-w-4xl mx-auto px-6 py-20">
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-bold mb-4">Code Genome</h1>
+            <p class="text-slate-300 text-lg">Cole a URL do repositório e veja o DNA visual do projeto</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
+            <form action="{{ route('repository-analyses.store') }}" method="POST" class="space-y-6">
+                @csrf
+
+                <div>
+                    <label class="block mb-2 text-sm text-slate-300">URL do repositório</label>
+                    <input
+                        type="url"
+                        name="repository_url"
+                        value="{{ old('repository_url') }}"
+                        placeholder="https://github.com/laravel/laravel"
+                        class="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-4 text-white outline-none"
+                    >
+                    @error('repository_url')
+                        <p class="text-red-400 text-sm mt-2">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <button class="w-full bg-indigo-600 hover:bg-indigo-500 transition rounded-xl py-4 font-semibold">
+                    Analisar repositório
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -6,20 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('repository_analyses', function (Blueprint $table) {
             $table->id();
+            $table->string('repository_url');
+            $table->string('repository_name')->nullable();
+            $table->string('owner')->nullable();
+            $table->json('metrics')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('repository_analyses');
