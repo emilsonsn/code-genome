@@ -68,6 +68,35 @@ enum RepositoryStack: string
         };
     }
 
+    public function extensions(): array
+    {
+        return match ($this) {
+            self::Laravel,
+            self::Symfony => ['php'],
+
+            self::React,
+            self::Node,
+            self::Express,
+            self::Next => ['js', 'jsx', 'ts', 'tsx'],
+
+            self::Vue,
+            self::Nuxt => ['js', 'ts', 'vue'],
+
+            self::Angular,
+            self::Nest => ['ts'],
+
+            self::Python,
+            self::Django,
+            self::Flask,
+            self::FastApi => ['py'],
+
+            self::Spring => ['java', 'kt'],
+
+            self::DotNet,
+            self::AspNet => ['cs'],
+        };
+    }
+
     public function detectorMethod(): string
     {
         return match ($this) {

@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Metrics;
 
+use App\Enums\RepositoryStack;
 use App\Infrastructure\Stack\StackDetector;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -85,9 +86,15 @@ class RepositoryMetricsCollector
 
     private function detectLanguages($files): array
     {
+        $extensions = collect(RepositoryStack::cases())
+            ->flatMap(fn ($stack) => $stack->extensions())
+            ->unique()
+            ->values()
+            ->toArray();
+
         return $files
             ->map(fn ($file) => strtolower($file->getExtension()))
-            ->filter()
+            ->filter(fn ($ext) => in_array($ext, $extensions))
             ->countBy()
             ->sortDesc()
             ->toArray();
@@ -290,9 +297,21 @@ class RepositoryMetricsCollector
 
     private function findLargestFiles($files): array
     {
+        $extensions = collect(RepositoryStack::cases())
+            ->flatMap(fn ($stack) => $stack->extensions())
+            ->unique()
+            ->toArray();
+
         $largest = [];
 
         foreach ($files as $file) {
+
+            $ext = strtolower($file->getExtension());
+
+            if (! in_array($ext, $extensions, true)) {
+                continue;
+            }
+
             try {
                 $lines = count(file($file->getPathname()));
             } catch (\Throwable) {
