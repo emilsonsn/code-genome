@@ -10,10 +10,16 @@ class RepositoryAnalysis extends Model
         'repository_url',
         'repository_name',
         'owner',
+        'slug',
         'metrics',
     ];
 
     protected $casts = [
         'metrics' => 'array',
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }

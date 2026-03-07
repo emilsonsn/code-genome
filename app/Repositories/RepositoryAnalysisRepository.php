@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\RepositoryAnalysis;
+use Illuminate\Support\Str;
 
 class RepositoryAnalysisRepository
 {
@@ -17,10 +18,13 @@ class RepositoryAnalysisRepository
         ?string $owner,
         array $metrics
     ): RepositoryAnalysis {
+        $slug = Str::slug($owner.'-'.$name);
+
         return RepositoryAnalysis::create([
             'repository_url' => $url,
             'repository_name' => $name,
             'owner' => $owner,
+            'slug' => $slug,
             'metrics' => $metrics,
         ]);
     }
