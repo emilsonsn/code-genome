@@ -13,17 +13,17 @@
 <body class="bg-slate-950 text-white min-h-screen">
 
 <div class="max-w-7xl mx-auto px-6 py-10">
-    <div class="flex items-center justify-between mb-10">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
         <div>
-            <h1 class="text-4xl font-bold flex items-center gap-3">
+            <h1 class="text-2xl md:text-4xl font-bold flex items-center gap-3">
                 <i class="fa-brands fa-github"></i>
                 {{ $analysis->owner }}/{{ $analysis->repository_name }}
             </h1>
-            <p class="text-slate-400 mt-2">{{ $analysis->repository_url }}</p>
+            <p class="text-slate-400 mt-2 text-sm md:text-base break-all">{{ $analysis->repository_url }}</p>
         </div>
 
         <a href="{{ route('repository-analyses.index') }}"
-           class="bg-slate-800 hover:bg-slate-700 px-5 py-3 rounded-xl">
+           class="w-full md:w-auto text-center bg-gradient-to-r from-indigo-600 to-emerald-600 hover:from-indigo-500 hover:to-emerald-500 px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-indigo-500/25">
             New Analysis
         </a>
     </div>
