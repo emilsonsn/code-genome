@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Genome</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon-dna.svg') }}">
+    <link rel="alternate icon" href="{{ asset('favicon.ico') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     @vite(['resources/css/loading.css', 'resources/css/particles.css'])
 </head>
