@@ -204,52 +204,6 @@
         </div>
     </div>
 
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8">
-        <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
-            <i class="fa-solid fa-microchip text-emerald-400"></i>
-            Stack Signals
-        </h2>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-            @foreach ($analysis->metrics['stack_signals'] as $stack)
-                <div
-                    class="flex items-center gap-3 rounded-xl px-4 py-3 border
-                    {{ $stack['enabled']
-                        ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300'
-                        : 'bg-slate-950 border-slate-800 text-slate-500' }}">
-
-                    <i class="{{ $stack['icon'] }} text-lg w-5 text-center"></i>
-
-                    <span>{{ $stack['label'] }}</span>
-                </div>
-            @endforeach
-        </div>
-    </div>
-
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8">
-        <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
-            <i class="fa-solid fa-code text-cyan-400"></i>
-            Languages
-        </h2>
-
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            @foreach ($analysis->metrics['language_distribution'] as $item)
-                <div>
-                    <div class="flex justify-between mb-2">
-                        <span class="capitalize">{{ $item['language'] }}</span>
-                        <span>{{ $item['percent'] }}%</span>
-                    </div>
-
-                    <div class="w-full bg-slate-800 rounded-full h-3">
-                        <div class="bg-cyan-500 h-3 rounded-full"
-                             style="width: {{ $item['percent'] }}%">
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    </div>
-
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
             <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
@@ -295,7 +249,53 @@
             @endforeach
         </div>
         @endif
+    </div>    
+
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8">
+        <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-microchip text-emerald-400"></i>
+            Stack Signals
+        </h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            @foreach ($analysis->metrics['stack_signals'] as $stack)
+                <div
+                    class="flex items-center gap-3 rounded-xl px-4 py-3 border
+                    {{ $stack['enabled']
+                        ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300'
+                        : 'bg-slate-950 border-slate-800 text-slate-500' }}">
+
+                    <i class="{{ $stack['icon'] }} text-lg w-5 text-center"></i>
+
+                    <span>{{ $stack['label'] }}</span>
+                </div>
+            @endforeach
+        </div>
     </div>
+
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8">
+        <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-code text-cyan-400"></i>
+            Languages
+        </h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            @foreach ($analysis->metrics['language_distribution'] as $item)
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="capitalize">{{ $item['language'] }}</span>
+                        <span>{{ $item['percent'] }}%</span>
+                    </div>
+
+                    <div class="w-full bg-slate-800 rounded-full h-3">
+                        <div class="bg-cyan-500 h-3 rounded-full"
+                             style="width: {{ $item['percent'] }}%">
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>    
 
     @if (!empty($analysis->metrics['python_metrics']['most_complex_functions']))
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
