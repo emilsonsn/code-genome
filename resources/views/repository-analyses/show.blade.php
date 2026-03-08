@@ -410,11 +410,9 @@
                     </div>
                 @endforeach
             </div>
-        </div>
     </div>
 
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8">
         <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
             <i class="fa-solid fa-folder-tree text-yellow-400"></i>
             Project Structure (depth 3)
@@ -423,7 +421,6 @@
         <div class="space-y-2">
             <x-folder-tree :tree="$analysis->metrics['directory_tree']" :level="0" />
         </div>
-
     </div>
 </div>
 </body>
