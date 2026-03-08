@@ -6,6 +6,7 @@ use App\Models\RepositoryAnalysis;
 use App\Services\RepositoryAnalyzerService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Throwable;
 
 class RepositoryAnalysisController extends Controller
 {
@@ -20,10 +21,18 @@ class RepositoryAnalysisController extends Controller
             'repository_url' => ['required', 'url'],
         ]);
 
-        $analysis = $service
-            ->setRepositoryUrl($data['repository_url'])
-            ->analyze()
-            ->object();
+        try {
+            $analysis = $service
+                ->setRepositoryUrl($data['repository_url'])
+                ->analyze()
+                ->object();
+        } catch (Throwable) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'repository_url' => 'Nao foi possivel analisar este repositorio agora. Verifique a URL e tente novamente.',
+                ]);
+        }
 
         return redirect()->route('repository-analyses.show', $analysis);
     }
