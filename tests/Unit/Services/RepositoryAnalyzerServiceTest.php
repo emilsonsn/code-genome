@@ -52,7 +52,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         );
     }
 
-    public function testReturnsExistingAnalysisWhenFound(): void
+    public function test_returns_existing_analysis_when_found(): void
     {
         $existingAnalysis = new RepositoryAnalysis([
             'repository_url' => 'https://github.com/owner/repo',
@@ -77,7 +77,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertSame($existingAnalysis, $result);
     }
 
-    public function testCreatesNewAnalysisWhenNotFound(): void
+    public function test_creates_new_analysis_when_not_found(): void
     {
         $url = 'https://github.com/owner/repo';
         $path = '/tmp/repo-clone';
@@ -140,7 +140,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertSame($newAnalysis, $result);
     }
 
-    public function testClonesRepositoryWhenNotCached(): void
+    public function test_clones_repository_when_not_cached(): void
     {
         $url = 'https://github.com/owner/repo';
 
@@ -171,7 +171,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertInstanceOf(RepositoryAnalyzerService::class, $result);
     }
 
-    public function testFetchesGithubData(): void
+    public function test_fetches_github_data(): void
     {
         $url = 'https://github.com/owner/repo';
 
@@ -212,7 +212,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertInstanceOf(RepositoryAnalyzerService::class, $result);
     }
 
-    public function testCalculatesScores(): void
+    public function test_calculates_scores(): void
     {
         $url = 'https://github.com/owner/repo';
 
@@ -242,7 +242,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertInstanceOf(RepositoryAnalyzerService::class, $result);
     }
 
-    public function testRunsPythonAnalyzer(): void
+    public function test_runs_python_analyzer(): void
     {
         $url = 'https://github.com/owner/repo';
         $path = '/tmp/repo-clone';
@@ -274,7 +274,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertInstanceOf(RepositoryAnalyzerService::class, $result);
     }
 
-    public function testDeletesClonedDirectoryAfterAnalysis(): void
+    public function test_deletes_cloned_directory_after_analysis(): void
     {
         $url = 'https://github.com/owner/repo';
         $path = '/tmp/repo-clone';
@@ -303,7 +303,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertInstanceOf(RepositoryAnalyzerService::class, $result);
     }
 
-    public function testDoesNotCloneWhenAnalysisExists(): void
+    public function test_does_not_clone_when_analysis_exists(): void
     {
         $existingAnalysis = new RepositoryAnalysis(['slug' => 'owner-repo']);
 
@@ -327,7 +327,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertSame($existingAnalysis, $result);
     }
 
-    public function testMergesAllMetricsIntoFinalResult(): void
+    public function test_merges_all_metrics_into_final_result(): void
     {
         $url = 'https://github.com/owner/repo';
 
@@ -365,7 +365,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertTrue($metricsVerified, 'Metrics should contain all expected keys');
     }
 
-    public function testAllowsMethodChaining(): void
+    public function test_allows_method_chaining(): void
     {
         $existingAnalysis = new RepositoryAnalysis(['slug' => 'test']);
 
@@ -385,7 +385,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertInstanceOf(RepositoryAnalyzerService::class, $result);
     }
 
-    public function testReturnsRepositoryAnalysisObject(): void
+    public function test_returns_repository_analysis_object(): void
     {
         $existingAnalysis = new RepositoryAnalysis(['slug' => 'test']);
 

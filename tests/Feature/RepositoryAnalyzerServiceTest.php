@@ -20,18 +20,24 @@ class RepositoryAnalyzerServiceTest extends TestCase
     use RefreshDatabase;
 
     private RepositoryAnalysisRepository $repository;
+
     private RepositoryAnalyzerService $service;
+
     private $cloner;
+
     private $metricsCollector;
+
     private $scoreCalculator;
+
     private $github;
+
     private $pythonAnalyzer;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->repository = new RepositoryAnalysisRepository();
+        $this->repository = new RepositoryAnalysisRepository;
 
         $this->cloner = Mockery::mock(GitRepositoryCloner::class);
         $this->metricsCollector = Mockery::mock(RepositoryMetricsCollector::class);
@@ -55,7 +61,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         parent::tearDown();
     }
 
-    public function testAnalyzeReturnsCachedResultWhenFresh(): void
+    public function test_analyze_returns_cached_result_when_fresh(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/owner/repo',
@@ -79,7 +85,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertEquals(['cached' => 'data'], $result->metrics);
     }
 
-    public function testAnalyzeReanalyzesWhenStale(): void
+    public function test_analyze_reanalyzes_when_stale(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/owner/repo',
@@ -107,7 +113,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertEquals('value', $result->metrics['new_metric']);
     }
 
-    public function testAnalyzeCreatesNewRecordWhenNotExists(): void
+    public function test_analyze_creates_new_record_when_not_exists(): void
     {
         $this->setupMocksForAnalysis();
 
@@ -122,7 +128,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertEquals('newowner', $result->owner);
     }
 
-    public function testAnalyzeDoesNotReanalyzeWhenLessThan24Hours(): void
+    public function test_analyze_does_not_reanalyze_when_less_than24_hours(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/owner/repo',
@@ -148,7 +154,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertEquals(['fresh' => 'data'], $result->metrics);
     }
 
-    public function testAnalyzeUpdatesTimestampWhenReanalyzing(): void
+    public function test_analyze_updates_timestamp_when_reanalyzing(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/owner/repo',
