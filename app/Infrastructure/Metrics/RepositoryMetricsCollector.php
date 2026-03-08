@@ -38,10 +38,7 @@ class RepositoryMetricsCollector
             'total_size_bytes' => $totalSize,
             'total_size_human' => $this->formatBytes($totalSize),
             'languages' => $extensions,
-            'language_distribution' => $this->calculateLanguageDistribution(
-                $extensions,
-                $files->count()
-            ),
+            'language_distribution' => $this->calculateLanguageDistribution($extensions),
             'has_readme' => $hasReadme,
             'has_docs' => $hasDocs,
 
@@ -184,23 +181,6 @@ class RepositoryMetricsCollector
         }
 
         return $tree;
-    }
-
-    private function fileContains(string $filePath, array $needles): bool
-    {
-        if (! File::exists($filePath)) {
-            return false;
-        }
-
-        $content = strtolower(File::get($filePath));
-
-        foreach ($needles as $needle) {
-            if (str_contains($content, strtolower($needle))) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private function formatBytes(int $bytes): string

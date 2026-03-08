@@ -102,7 +102,6 @@ enum RepositoryStack: string
             self::AspNet => ['cs', 'html', 'css'],
             self::Html => ['html'],
             self::Css => ['css', 'scss'],
-            default => [],
         };
     }
 
