@@ -1,0 +1,235 @@
+.particles-container {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: float linear infinite;
+}
+
+.particle-gene {
+    width: 8px;
+    height: 20px;
+    border-radius: 4px;
+    animation: float-rotate linear infinite;
+}
+
+.particle-helix {
+    width: 30px;
+    height: 30px;
+    border: 3px solid;
+    border-radius: 50%;
+    background: transparent;
+    animation: float-spin linear infinite;
+}
+
+.particle-dot {
+    width: 6px;
+    height: 6px;
+}
+
+.particle-code {
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: bold;
+    animation: float-fade linear infinite;
+}
+
+/* Colors */
+.color-indigo { 
+    background: linear-gradient(135deg, #818cf8, #6366f1); 
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+.color-emerald { 
+    background: linear-gradient(135deg, #34d399, #10b981); 
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+.color-purple { 
+    background: linear-gradient(135deg, #c084fc, #a855f7); 
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+}
+.color-cyan { 
+    background: linear-gradient(135deg, #22d3ee, #06b6d4); 
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+}
+.color-pink { 
+    background: linear-gradient(135deg, #f472b6, #ec4899); 
+    box-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+}
+
+.particle-helix.color-indigo { background: transparent; border-color: #6366f1; box-shadow: 0 0 15px rgba(99, 102, 241, 0.3); }
+.particle-helix.color-emerald { background: transparent; border-color: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
+.particle-helix.color-purple { background: transparent; border-color: #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.3); }
+
+.particle-code { background: none !important; box-shadow: none !important; }
+.particle-code.color-indigo { color: #818cf8; text-shadow: 0 0 10px rgba(99, 102, 241, 0.5); }
+.particle-code.color-emerald { color: #34d399; text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+.particle-code.color-cyan { color: #22d3ee; text-shadow: 0 0 10px rgba(6, 182, 212, 0.5); }
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    5% {
+        opacity: 0.6;
+    }
+    95% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes float-rotate {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    5% {
+        opacity: 0.7;
+    }
+    95% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(-100px) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@keyframes float-spin {
+    0% {
+        transform: translateY(100vh) rotate(0deg) scale(0.5);
+        opacity: 0;
+    }
+    5% {
+        opacity: 0.4;
+    }
+    50% {
+        transform: translateY(50vh) rotate(180deg) scale(1);
+    }
+    95% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg) scale(0.5);
+        opacity: 0;
+    }
+}
+
+@keyframes float-fade {
+    0% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+    5% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    95% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+}
+
+/* DNA Bridge connecting particles */
+.dna-connector {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, #6366f1, #10b981);
+    opacity: 0.3;
+    animation: pulse-connector 3s ease-in-out infinite;
+}
+
+@keyframes pulse-connector {
+    0%, 100% { opacity: 0.1; transform: scaleX(0.8); }
+    50% { opacity: 0.4; transform: scaleX(1); }
+}
+
+/* Glow effect on main container */
+.glow-container {
+    position: relative;
+}
+
+.glow-container::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, #6366f1, #10b981, #a855f7, #6366f1);
+    border-radius: 18px;
+    z-index: -1;
+    opacity: 0.5;
+    filter: blur(15px);
+    animation: glow-rotate 5s linear infinite;
+    background-size: 300% 300%;
+}
+
+@keyframes glow-rotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Title DNA animation */
+.title-dna {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.title-helix {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.title-pair {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    animation: title-dna-rotate 2s ease-in-out infinite;
+}
+
+.title-pair:nth-child(1) { animation-delay: 0s; }
+.title-pair:nth-child(2) { animation-delay: 0.2s; }
+.title-pair:nth-child(3) { animation-delay: 0.4s; }
+
+.title-node {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.title-node-left {
+    background: #818cf8;
+}
+
+.title-node-right {
+    background: #34d399;
+}
+
+.title-bridge {
+    width: 12px;
+    height: 2px;
+    background: linear-gradient(90deg, #818cf8, #34d399);
+    border-radius: 1px;
+}
+
+@keyframes title-dna-rotate {
+    0%, 100% { transform: scaleX(1); }
+    50% { transform: scaleX(-1); }
+}
