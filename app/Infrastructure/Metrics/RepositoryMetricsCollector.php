@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Metrics;
 
 use App\Enums\RepositoryStack;
+use App\Infrastructure\Python\PythonRepositoryAnalyzer;
 use App\Infrastructure\Stack\StackDetector;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -11,9 +12,12 @@ class RepositoryMetricsCollector
 {
     private StackDetector $stackDetector;
 
-    public function __construct(StackDetector $stackDetector)
+    private PythonRepositoryAnalyzer $pythonAnalyzer;
+
+    public function __construct(StackDetector $stackDetector, PythonRepositoryAnalyzer $pythonAnalyzer)
     {
         $this->stackDetector = $stackDetector;
+        $this->pythonAnalyzer = $pythonAnalyzer;
     }
 
     public function collect(string $path): array
@@ -56,6 +60,7 @@ class RepositoryMetricsCollector
             ),
             'largest_directories' => $this->findLargestDirectories($path),
             'largest_files' => $this->findLargestFiles($files),
+            'python_metrics' => $this->pythonAnalyzer->analyze($path),
         ];
     }
 

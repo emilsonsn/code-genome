@@ -18,7 +18,6 @@ class GitRepositoryCloner
         $result = Process::run([
             'git',
             'clone',
-            '--depth=1',
             '--filter=blob:none',
             $url,
             $path,

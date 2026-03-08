@@ -128,6 +128,49 @@
         </div>
     </div>
 
+    @if (!empty($analysis->metrics['python_metrics']))
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-10">
+        <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-magnifying-glass-chart text-rose-400"></i>
+            Code Analysis
+        </h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-code text-rose-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Lines of Code</p>
+                    <p class="text-2xl font-bold">{{ number_format($analysis->metrics['python_metrics']['total_lines_of_code'] ?? 0) }}</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-file-lines text-blue-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Files Analyzed</p>
+                    <p class="text-2xl font-bold">{{ number_format($analysis->metrics['python_metrics']['files_analyzed'] ?? 0) }}</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-code-commit text-amber-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Total Commits</p>
+                    <p class="text-2xl font-bold">{{ number_format($analysis->metrics['python_metrics']['total_commits'] ?? 0) }}</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <i class="fa-solid fa-people-group text-teal-400 text-2xl"></i>
+                <div>
+                    <p class="text-slate-400 text-xs">Contributors</p>
+                    <p class="text-2xl font-bold">{{ number_format($analysis->metrics['python_metrics']['contributors'] ?? 0) }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-10">
         <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
             <i class="fa-solid fa-sitemap text-purple-400"></i>
@@ -161,6 +204,52 @@
         </div>
     </div>
 
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8">
+        <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-microchip text-emerald-400"></i>
+            Stack Signals
+        </h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            @foreach ($analysis->metrics['stack_signals'] as $stack)
+                <div
+                    class="flex items-center gap-3 rounded-xl px-4 py-3 border
+                    {{ $stack['enabled']
+                        ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300'
+                        : 'bg-slate-950 border-slate-800 text-slate-500' }}">
+
+                    <i class="{{ $stack['icon'] }} text-lg w-5 text-center"></i>
+
+                    <span>{{ $stack['label'] }}</span>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8">
+        <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-code text-cyan-400"></i>
+            Languages
+        </h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            @foreach ($analysis->metrics['language_distribution'] as $item)
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="capitalize">{{ $item['language'] }}</span>
+                        <span>{{ $item['percent'] }}%</span>
+                    </div>
+
+                    <div class="w-full bg-slate-800 rounded-full h-3">
+                        <div class="bg-cyan-500 h-3 rounded-full"
+                             style="width: {{ $item['percent'] }}%">
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
             <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
@@ -185,28 +274,57 @@
             @endforeach
         </div>
 
+        @if (!empty($analysis->metrics['python_metrics']['hotspot_files']))
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
             <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
-                <i class="fa-solid fa-microchip text-emerald-400"></i>
-                Stack Signals
+                <i class="fa-solid fa-fire text-orange-400"></i>
+                Hotspot Files
             </h2>
 
-            <div class="grid grid-cols-2 gap-3">
-                @foreach ($analysis->metrics['stack_signals'] as $stack)
-                    <div
-                        class="flex items-center gap-3 rounded-xl px-4 py-3 border
-                        {{ $stack['enabled']
-                            ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300'
-                            : 'bg-slate-950 border-slate-800 text-slate-500' }}">
+            <p class="text-slate-500 text-sm mb-4">Files with most changes (high churn)</p>
 
-                        <i class="{{ $stack['icon'] }} text-lg w-5 text-center"></i>
+            @foreach ($analysis->metrics['python_metrics']['hotspot_files'] as $hotspot)
+                <div class="flex justify-between items-center border-b border-slate-800 py-3">
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-file-code text-orange-400"></i>
+                        {{ $hotspot['file'] }}
+                    </span>
 
-                        <span>{{ $stack['label'] }}</span>
+                    <span class="text-slate-400">{{ $hotspot['changes'] }} changes</span>
+                </div>
+            @endforeach
+        </div>
+        @endif
+    </div>
+
+    @if (!empty($analysis->metrics['python_metrics']['most_complex_functions']))
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+            <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-brain text-pink-400"></i>
+                Most Complex Functions
+            </h2>
+
+            @foreach ($analysis->metrics['python_metrics']['most_complex_functions'] as $func)
+                <div class="flex justify-between items-center border-b border-slate-800 py-3">
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                        <i class="fa-solid fa-function text-pink-400"></i>
+                        <div class="min-w-0">
+                            <p class="font-medium truncate">{{ $func['name'] }}</p>
+                            <p class="text-slate-500 text-xs truncate">{{ basename($func['file']) }}</p>
+                        </div>
                     </div>
-                @endforeach
-            </div>
+
+                    <span class="px-3 py-1 rounded-lg text-sm font-bold
+                        {{ $func['complexity'] >= 10 ? 'bg-red-500/20 text-red-400' :
+                           ($func['complexity'] >= 5 ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400') }}">
+                        {{ $func['complexity'] }}
+                    </span>
+                </div>
+            @endforeach
         </div>
     </div>
+    @endif
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
@@ -246,38 +364,11 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-8 mb-8">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-            <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
-                <i class="fa-solid fa-code text-cyan-400"></i>
-                Languages
-            </h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                @foreach ($analysis->metrics['language_distribution'] as $item)
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="capitalize">{{ $item['language'] }}</span>
-                            <span>{{ $item['percent'] }}%</span>
-                        </div>
-
-                        <div class="w-full bg-slate-800 rounded-full h-3">
-                            <div class="bg-cyan-500 h-3 rounded-full"
-                                 style="width: {{ $item['percent'] }}%">
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 gap-8 mb-8">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-            <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
-                <i class="fa-solid fa-cubes text-purple-400"></i>
-                Dependencies & Documentation
-            </h2>
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8">
+        <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-cubes text-purple-400"></i>
+            Dependencies & Documentation
+        </h2>
 
             <div class="space-y-3">
                 <div class="flex justify-between items-center">

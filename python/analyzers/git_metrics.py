@@ -1,6 +1,14 @@
 from pydriller import Repository
 
-def commit_metrics(repo_path):
+def is_code_file(filename, extensions):
+    if not extensions:
+        return True
+    ext = filename.rsplit('.', 1)[-1].lower() if '.' in filename else ''
+    return ext in extensions
+
+def commit_metrics(repo_path, extensions=None):
+    if extensions is None:
+        extensions = []
 
     commits = 0
     authors = set()
@@ -12,7 +20,8 @@ def commit_metrics(repo_path):
             authors.add(commit.author.name)
 
             for mod in commit.modified_files:
-                file_changes[mod.filename] = file_changes.get(mod.filename, 0) + 1
+                if is_code_file(mod.filename, extensions):
+                    file_changes[mod.filename] = file_changes.get(mod.filename, 0) + 1
 
     except:
         return {

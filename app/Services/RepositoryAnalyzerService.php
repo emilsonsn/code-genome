@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Clients\GitHub\GitHubRepositoryClient;
 use App\Infrastructure\Git\GitRepositoryCloner;
 use App\Infrastructure\Metrics\RepositoryMetricsCollector;
+use App\Infrastructure\Python\PythonRepositoryAnalyzer;
 use App\Infrastructure\Score\RepositoryScoreCalculator;
 use App\Models\RepositoryAnalysis;
 use App\Repositories\RepositoryAnalysisRepository;
@@ -21,7 +22,8 @@ class RepositoryAnalyzerService
         private GitRepositoryCloner $cloner,
         private RepositoryMetricsCollector $metricsCollector,
         private RepositoryScoreCalculator $scoreCalculator,
-        private GitHubRepositoryClient $github
+        private GitHubRepositoryClient $github,
+        private PythonRepositoryAnalyzer $pythonAnalyzer
     ) {}
 
     public function setRepositoryUrl(string $url): self
@@ -54,6 +56,9 @@ class RepositoryAnalyzerService
 
         $scores = $this->scoreCalculator->calculate($metrics);
 
+        $pythonMetrics = $this->pythonAnalyzer->analyze($path);
+
+        $metrics = array_merge($metrics, $pythonMetrics);
         $metrics['github'] = $githubData;
         $metrics['scores'] = $scores;
 
