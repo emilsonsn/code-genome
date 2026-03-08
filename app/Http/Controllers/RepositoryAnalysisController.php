@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\RepositoryAnalysis;
 use App\Services\RepositoryAnalyzerService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class RepositoryAnalysisController extends Controller
 {
