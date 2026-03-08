@@ -3,13 +3,21 @@
 namespace App\Repositories;
 
 use App\Models\RepositoryAnalysis;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 class RepositoryAnalysisRepository
 {
+    private const CACHE_DURATION_HOURS = 24;
+
     public function findByUrl(string $url): ?RepositoryAnalysis
     {
         return RepositoryAnalysis::where('repository_url', $url)->first();
+    }
+
+    public function isStale(RepositoryAnalysis $analysis): bool
+    {
+        return $analysis->updated_at->diffInHours(Carbon::now()) >= self::CACHE_DURATION_HOURS;
     }
 
     public function create(
@@ -27,6 +35,15 @@ class RepositoryAnalysisRepository
             'slug' => $slug,
             'metrics' => $metrics,
         ]);
+    }
+
+    public function update(RepositoryAnalysis $analysis, array $metrics): RepositoryAnalysis
+    {
+        $analysis->update([
+            'metrics' => $metrics,
+        ]);
+
+        return $analysis->fresh();
     }
 
     public function extractRepoInfo(string $url): array

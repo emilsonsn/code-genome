@@ -37,7 +37,7 @@ class RepositoryAnalyzerService
     {
         $existing = $this->repository->findByUrl($this->repositoryUrl);
 
-        if ($existing) {
+        if ($existing && ! $this->repository->isStale($existing)) {
             $this->analysis = $existing;
 
             return $this;
@@ -62,12 +62,16 @@ class RepositoryAnalyzerService
         $metrics['github'] = $githubData;
         $metrics['scores'] = $scores;
 
-        $this->analysis = $this->repository->create(
-            $this->repositoryUrl,
-            $repoInfo['repository_name'],
-            $repoInfo['owner'],
-            $metrics
-        );
+        if ($existing) {
+            $this->analysis = $this->repository->update($existing, $metrics);
+        } else {
+            $this->analysis = $this->repository->create(
+                $this->repositoryUrl,
+                $repoInfo['repository_name'],
+                $repoInfo['owner'],
+                $metrics
+            );
+        }
 
         File::deleteDirectory($path);
 
