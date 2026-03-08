@@ -144,13 +144,8 @@ class RepositoryMetricsCollectorTest extends TestCase
     {
         $this->setupBasicMocks();
 
-        File::shouldReceive('exists')
-            ->with('/path/to/repo/composer.json')
-            ->andReturn(true);
-
-        File::shouldReceive('exists')
-            ->with('/path/to/repo/package.json')
-            ->andReturn(true);
+        File::shouldReceive('exists')->with('/path/to/repo/composer.json')->andReturn(true);
+        File::shouldReceive('exists')->with('/path/to/repo/package.json')->andReturn(true);
 
         $result = $this->collector->collect('/path/to/repo');
 
@@ -258,7 +253,7 @@ class RepositoryMetricsCollectorTest extends TestCase
     public function test_formats_bytes_correctly(): void
     {
         $files = $this->createMockFiles([
-            ['name' => 'file.php', 'extension' => 'php', 'size' => 1048576], // 1 MB
+            ['name' => 'file.php', 'extension' => 'php', 'size' => 1048576],
         ]);
 
         $this->setupMocksWithFiles($files);
@@ -274,18 +269,13 @@ class RepositoryMetricsCollectorTest extends TestCase
             ['name' => 'app.php', 'extension' => 'php', 'size' => 1000, 'path' => '/src/app.php'],
         ]);
 
-        // Git files should be filtered out
         $this->setupMocksWithFiles($files);
 
         $result = $this->collector->collect('/path/to/repo');
 
-        // Total files should not include .git directory files
         $this->assertGreaterThanOrEqual(0, $result['total_files']);
     }
 
-    /**
-     * Create mock SplFileInfo objects
-     */
     private function createMockFiles(array $fileDefinitions): array
     {
         $files = [];
@@ -302,9 +292,6 @@ class RepositoryMetricsCollectorTest extends TestCase
         return $files;
     }
 
-    /**
-     * Setup basic mocks for simple tests
-     */
     private function setupBasicMocks(): void
     {
         File::shouldReceive('allFiles')->andReturn(collect([]));
@@ -317,9 +304,6 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->pythonAnalyzer->shouldReceive('analyze')->andReturn([]);
     }
 
-    /**
-     * Setup mocks with specific files
-     */
     private function setupMocksWithFiles(array $files): void
     {
         File::shouldReceive('allFiles')->andReturn(collect($files));

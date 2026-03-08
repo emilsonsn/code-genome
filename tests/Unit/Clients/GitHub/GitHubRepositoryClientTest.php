@@ -22,19 +22,19 @@ class GitHubRepositoryClientTest extends TestCase
             '*/repos/laravel/laravel' => Http::response([
                 'id' => 1234,
                 'name' => 'laravel',
-                'full_name' => 'laravel/laravel',
+                'fullName' => 'laravel/laravel',
                 'description' => 'A PHP framework for web artisans',
-                'stargazers_count' => 70000,
-                'forks_count' => 22000,
-                'open_issues_count' => 50,
+                'stargazersCount' => 70000,
+                'forksCount' => 22000,
+                'openIssuesCount' => 50,
             ], 200),
         ]);
 
         $result = $this->client->getRepository('laravel', 'laravel');
 
         $this->assertEquals('laravel', $result['name']);
-        $this->assertEquals('laravel/laravel', $result['full_name']);
-        $this->assertEquals(70000, $result['stargazers_count']);
+        $this->assertEquals('laravel/laravel', $result['fullName']);
+        $this->assertEquals(70000, $result['stargazersCount']);
     }
 
     public function test_fetches_repository_languages(): void
@@ -145,7 +145,7 @@ class GitHubRepositoryClientTest extends TestCase
 
     public function test_uses_correct_base_url(): void
     {
-        config(['github.base_url' => 'https://api.github.com']);
+        config(['github.baseUrl' => 'https://api.github.com']);
 
         Http::fake([
             'https://api.github.com/*' => Http::response(['name' => 'test'], 200),
