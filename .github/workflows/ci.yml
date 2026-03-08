@@ -30,15 +30,6 @@ jobs:
       - name: Generate app key
         run: php artisan key:generate
 
-      - name: Run Pint
-        run: ./vendor/bin/pint --test
-
-      - name: Run PHPStan
-        run: ./vendor/bin/phpstan analyse
-
-      - name: Run Tests
-        run: php artisan test
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -48,4 +39,13 @@ jobs:
         run: npm install
 
       - name: Build assets
-        run: npm run build
+        run: npm run build        
+
+      - name: Run Pint
+        run: ./vendor/bin/pint --test
+
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyse
+
+      - name: Run Tests
+        run: php artisan test
