@@ -1,0 +1,65 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+          script: |
+            cd /var/www/code-genome
+
+            echo "Atualizando repositório"
+            git pull origin main
+
+            echo "Instalando dependências PHP"
+            composer install --no-dev --optimize-autoloader
+
+            echo "Instalando dependências Node"
+            npm install
+
+            echo "Compilando assets"
+            npm run build
+
+            echo "Instalando dependências Python"
+            cd python
+
+            if [ ! -d "env" ]; then
+              python3 -m venv env
+            fi
+
+            source env/bin/activate
+            pip install -r requirements.txt
+
+            deactivate
+
+            cd ..
+
+            echo "Rodando migrations"
+            php artisan migrate --force
+
+            echo "Rodando seeders"
+            php artisan db:seed --force
+
+            echo "Limpando cache"
+            php artisan config:clear
+            php artisan cache:clear
+            php artisan route:clear
+            php artisan view:clear
+
+            php artisan config:cache
+            php artisan route:cache
+
+            echo "Deploy finalizado"
