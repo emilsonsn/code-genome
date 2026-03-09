@@ -109,7 +109,23 @@ class RepositoryMetricsCollector
 
     private function detectDocs(string $path): bool
     {
-        return File::exists($path.'/docs');
+        $docsFiles = [
+            'docs',
+            'documentation',
+            'CONTRIBUTING.md',
+            'CHANGELOG.md',
+            'ARCHITECTURE.md',
+            'SECURITY.md',
+            'CODE_OF_CONDUCT.md',
+        ];
+
+        foreach ($docsFiles as $doc) {
+            if (File::exists($path.'/'.$doc)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function detectTests($files): int
