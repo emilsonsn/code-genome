@@ -16,7 +16,7 @@ class GitHubRepositoryClientTest extends TestCase
         $this->client = new GitHubRepositoryClient;
     }
 
-    public function test_fetches_repository_information(): void
+    public function testFetchesRepositoryInformation(): void
     {
         Http::fake([
             '*/repos/laravel/laravel' => Http::response([
@@ -37,7 +37,7 @@ class GitHubRepositoryClientTest extends TestCase
         $this->assertEquals(70000, $result['stargazersCount']);
     }
 
-    public function test_fetches_repository_languages(): void
+    public function testFetchesRepositoryLanguages(): void
     {
         Http::fake([
             '*/repos/owner/repo/languages' => Http::response([
@@ -54,7 +54,7 @@ class GitHubRepositoryClientTest extends TestCase
         $this->assertEquals(500000, $result['PHP']);
     }
 
-    public function test_fetches_contributors(): void
+    public function testFetchesContributors(): void
     {
         Http::fake([
             '*/repos/owner/repo/contributors' => Http::response([
@@ -70,7 +70,7 @@ class GitHubRepositoryClientTest extends TestCase
         $this->assertEquals(100, $result[0]['contributions']);
     }
 
-    public function test_fetches_commit_activity(): void
+    public function testFetchesCommitActivity(): void
     {
         Http::fake([
             '*/repos/owner/repo/stats/commit_activity' => Http::response([
@@ -85,7 +85,7 @@ class GitHubRepositoryClientTest extends TestCase
         $this->assertEquals(10, $result[0]['total']);
     }
 
-    public function test_fetches_code_frequency(): void
+    public function testFetchesCodeFrequency(): void
     {
         Http::fake([
             '*/repos/owner/repo/stats/code_frequency' => Http::response([
@@ -101,7 +101,7 @@ class GitHubRepositoryClientTest extends TestCase
         $this->assertEquals(-100, $result[0][2]);
     }
 
-    public function test_handles_empty_response(): void
+    public function testHandlesEmptyResponse(): void
     {
         Http::fake([
             '*/repos/owner/repo/contributors' => Http::response([], 200),
@@ -113,7 +113,7 @@ class GitHubRepositoryClientTest extends TestCase
         $this->assertEmpty($result);
     }
 
-    public function test_includes_authorization_header_when_token_is_set(): void
+    public function testIncludesAuthorizationHeaderWhenTokenIsSet(): void
     {
         config(['github.token' => 'test-token']);
 
@@ -129,7 +129,7 @@ class GitHubRepositoryClientTest extends TestCase
         });
     }
 
-    public function test_works_without_token(): void
+    public function testWorksWithoutToken(): void
     {
         config(['github.token' => null]);
 
@@ -143,7 +143,7 @@ class GitHubRepositoryClientTest extends TestCase
         $this->assertEquals('test', $result['name']);
     }
 
-    public function test_uses_correct_base_url(): void
+    public function testUsesCorrectBaseUrl(): void
     {
         config(['github.baseUrl' => 'https://api.github.com']);
 
@@ -159,7 +159,7 @@ class GitHubRepositoryClientTest extends TestCase
         });
     }
 
-    public function test_constructs_correct_endpoints(): void
+    public function testConstructsCorrectEndpoints(): void
     {
         Http::fake([
             '*' => Http::response([], 200),
@@ -172,7 +172,7 @@ class GitHubRepositoryClientTest extends TestCase
         });
     }
 
-    public function test_handles_special_characters_in_owner_and_repo(): void
+    public function testHandlesSpecialCharactersInOwnerAndRepo(): void
     {
         Http::fake([
             '*' => Http::response(['name' => 'test-repo'], 200),

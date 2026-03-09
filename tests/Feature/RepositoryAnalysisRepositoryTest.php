@@ -20,7 +20,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->repository = new RepositoryAnalysisRepository;
     }
 
-    public function test_find_by_url_returns_analysis_when_exists(): void
+    public function testFindByUrlReturnsAnalysisWhenExists(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/owner/repo',
@@ -36,14 +36,14 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->assertEquals($analysis->id, $result->id);
     }
 
-    public function test_find_by_url_returns_null_when_not_exists(): void
+    public function testFindByUrlReturnsNullWhenNotExists(): void
     {
         $result = $this->repository->findByUrl('https://github.com/nonexistent/repo');
 
         $this->assertNull($result);
     }
 
-    public function test_is_stale_returns_true_when_analysis_older_than24_hours(): void
+    public function testIsStaleReturnsTrueWhenAnalysisOlderThan24Hours(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/owner/repo',
@@ -59,7 +59,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->assertTrue($this->repository->isStale($analysis));
     }
 
-    public function test_is_stale_returns_false_when_analysis_less_than24_hours(): void
+    public function testIsStaleReturnsFalseWhenAnalysisLessThan24Hours(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/owner/repo',
@@ -75,7 +75,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->assertFalse($this->repository->isStale($analysis));
     }
 
-    public function test_is_stale_returns_true_when_analysis_exactly24_hours(): void
+    public function testIsStaleReturnsTrueWhenAnalysisExactly24Hours(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/owner/repo',
@@ -91,7 +91,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->assertTrue($this->repository->isStale($analysis));
     }
 
-    public function test_update_updates_metrics_and_timestamp(): void
+    public function testUpdateUpdatesMetricsAndTimestamp(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/owner/repo',
@@ -115,7 +115,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         Carbon::setTestNow();
     }
 
-    public function test_create_creates_new_analysis(): void
+    public function testCreateCreatesNewAnalysis(): void
     {
         $result = $this->repository->create(
             'https://github.com/owner/newrepo',
@@ -132,7 +132,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->assertEquals(['metrics' => 'data'], $result->metrics);
     }
 
-    public function test_extract_repo_info_extracts_owner_and_repo(): void
+    public function testExtractRepoInfoExtractsOwnerAndRepo(): void
     {
         $result = $this->repository->extractRepoInfo('https://github.com/laravel/framework');
 
@@ -140,7 +140,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->assertEquals('framework', $result['repository_name']);
     }
 
-    public function test_extract_repo_info_handles_trailing_slash(): void
+    public function testExtractRepoInfoHandlesTrailingSlash(): void
     {
         $result = $this->repository->extractRepoInfo('https://github.com/laravel/framework/');
 

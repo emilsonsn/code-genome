@@ -26,7 +26,7 @@ class StackDetectorTest extends TestCase
         parent::tearDown();
     }
 
-    public function test_returns_array_with_all_stacks(): void
+    public function testReturnsArrayWithAllStacks(): void
     {
         $result = $this->detector->detect($this->tempPath, []);
 
@@ -40,7 +40,7 @@ class StackDetectorTest extends TestCase
         }
     }
 
-    public function test_detects_laravel_from_artisan_and_routes(): void
+    public function testDetectsLaravelFromArtisanAndRoutes(): void
     {
         // Laravel detection requires artisan AND routes/web.php
         File::put($this->tempPath.'/artisan', '#!/usr/bin/env php');
@@ -53,7 +53,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($laravel['enabled']);
     }
 
-    public function test_detects_symfony_from_bin_console(): void
+    public function testDetectsSymfonyFromBinConsole(): void
     {
         // Symfony detection requires bin/console
         File::ensureDirectoryExists($this->tempPath.'/bin');
@@ -65,7 +65,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($symfony['enabled']);
     }
 
-    public function test_detects_react_from_package_json(): void
+    public function testDetectsReactFromPackageJson(): void
     {
         $this->createPackageJson(['react']);
 
@@ -75,7 +75,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($react['enabled']);
     }
 
-    public function test_detects_vue_from_package_json(): void
+    public function testDetectsVueFromPackageJson(): void
     {
         $this->createPackageJson(['vue']);
 
@@ -85,7 +85,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($vue['enabled']);
     }
 
-    public function test_detects_angular_from_angular_json(): void
+    public function testDetectsAngularFromAngularJson(): void
     {
         // Angular detection requires angular.json file
         File::put($this->tempPath.'/angular.json', '{}');
@@ -96,7 +96,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($angular['enabled']);
     }
 
-    public function test_detects_node_from_package_json_existence(): void
+    public function testDetectsNodeFromPackageJsonExistence(): void
     {
         $this->createPackageJson([]);
 
@@ -106,7 +106,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($node['enabled']);
     }
 
-    public function test_detects_python_from_requirements_txt(): void
+    public function testDetectsPythonFromRequirementsTxt(): void
     {
         File::put($this->tempPath.'/requirements.txt', 'flask==2.0.0');
 
@@ -116,7 +116,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($python['enabled']);
     }
 
-    public function test_detects_python_from_pyproject_toml(): void
+    public function testDetectsPythonFromPyprojectToml(): void
     {
         File::put($this->tempPath.'/pyproject.toml', '[project]');
 
@@ -126,7 +126,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($python['enabled']);
     }
 
-    public function test_detects_django_from_requirements_txt(): void
+    public function testDetectsDjangoFromRequirementsTxt(): void
     {
         File::put($this->tempPath.'/requirements.txt', 'Django==4.0.0');
 
@@ -136,7 +136,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($django['enabled']);
     }
 
-    public function test_detects_flask_from_requirements_txt(): void
+    public function testDetectsFlaskFromRequirementsTxt(): void
     {
         File::put($this->tempPath.'/requirements.txt', 'flask==2.0.0');
 
@@ -146,7 +146,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($flask['enabled']);
     }
 
-    public function test_detects_fastapi_from_requirements_txt(): void
+    public function testDetectsFastapiFromRequirementsTxt(): void
     {
         File::put($this->tempPath.'/requirements.txt', 'fastapi==0.100.0');
 
@@ -156,7 +156,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($fastapi['enabled']);
     }
 
-    public function test_detects_spring_from_pom_xml(): void
+    public function testDetectsSpringFromPomXml(): void
     {
         File::put($this->tempPath.'/pom.xml', '<dependency>spring-boot</dependency>');
 
@@ -166,7 +166,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($spring['enabled']);
     }
 
-    public function test_detects_spring_from_build_gradle_pom_xml(): void
+    public function testDetectsSpringFromBuildGradlePomXml(): void
     {
         // Spring detection uses pom.xml, so create pom.xml instead
         File::put($this->tempPath.'/pom.xml', '<dependency>spring-boot</dependency>');
@@ -177,7 +177,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($spring['enabled']);
     }
 
-    public function test_detects_express_from_package_json(): void
+    public function testDetectsExpressFromPackageJson(): void
     {
         $this->createPackageJson(['express']);
 
@@ -187,7 +187,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($express['enabled']);
     }
 
-    public function test_detects_next_from_package_json(): void
+    public function testDetectsNextFromPackageJson(): void
     {
         $this->createPackageJson(['next']);
 
@@ -197,7 +197,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($next['enabled']);
     }
 
-    public function test_detects_nuxt_from_package_json(): void
+    public function testDetectsNuxtFromPackageJson(): void
     {
         $this->createPackageJson(['nuxt']);
 
@@ -207,7 +207,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($nuxt['enabled']);
     }
 
-    public function test_detects_nest_from_package_json(): void
+    public function testDetectsNestFromPackageJson(): void
     {
         $this->createPackageJson(['@nestjs/core']);
 
@@ -217,7 +217,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($nest['enabled']);
     }
 
-    public function test_detects_dotnet_from_csproj(): void
+    public function testDetectsDotnetFromCsproj(): void
     {
         File::put($this->tempPath.'/project.csproj', '<Project Sdk="Microsoft.NET.Sdk"></Project>');
 
@@ -227,7 +227,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($dotnet['enabled']);
     }
 
-    public function test_detects_aspnet_from_csproj(): void
+    public function testDetectsAspnetFromCsproj(): void
     {
         // AspNet detection requires .csproj file AND Microsoft.AspNetCore string
         File::put($this->tempPath.'/project.csproj', '<PackageReference Include="Microsoft.AspNetCore.App" />');
@@ -238,7 +238,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($aspnet['enabled']);
     }
 
-    public function test_detects_html_from_html_files(): void
+    public function testDetectsHtmlFromHtmlFiles(): void
     {
         File::put($this->tempPath.'/index.html', '<!DOCTYPE html>');
 
@@ -248,7 +248,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($html['enabled']);
     }
 
-    public function test_detects_css_from_css_files(): void
+    public function testDetectsCssFromCssFiles(): void
     {
         File::put($this->tempPath.'/styles.css', 'body { }');
 
@@ -258,7 +258,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($css['enabled']);
     }
 
-    public function test_detects_css_from_scss_files(): void
+    public function testDetectsCssFromScssFiles(): void
     {
         File::put($this->tempPath.'/styles.scss', '$color: red;');
 
@@ -268,7 +268,7 @@ class StackDetectorTest extends TestCase
         $this->assertTrue($css['enabled']);
     }
 
-    public function test_returns_all_disabled_for_empty_repository(): void
+    public function testReturnsAllDisabledForEmptyRepository(): void
     {
         $result = $this->detector->detect($this->tempPath, []);
 
@@ -279,7 +279,7 @@ class StackDetectorTest extends TestCase
         }
     }
 
-    public function test_detects_multiple_stacks_simultaneously(): void
+    public function testDetectsMultipleStacksSimultaneously(): void
     {
         // Laravel requires artisan + routes/web.php
         File::put($this->tempPath.'/artisan', '#!/usr/bin/env php');

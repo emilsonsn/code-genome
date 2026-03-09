@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class RepositoryAnalysisControllerTest extends TestCase
 {
-    public function test_store_redirects_to_show_when_analysis_succeeds(): void
+    public function testStoreRedirectsToShowWhenAnalysisSucceeds(): void
     {
         $analysis = new RepositoryAnalysis([
             'slug' => 'owner-repo',
@@ -38,7 +38,7 @@ class RepositoryAnalysisControllerTest extends TestCase
         $response->assertRedirect(route('repository-analyses.show', $analysis));
     }
 
-    public function test_store_returns_with_validation_error_when_analysis_fails(): void
+    public function testStoreReturnsWithValidationErrorWhenAnalysisFails(): void
     {
         /** @var MockInterface $service */
         $service = Mockery::mock(RepositoryAnalyzerService::class);

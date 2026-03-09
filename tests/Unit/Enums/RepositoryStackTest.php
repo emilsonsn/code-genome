@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class RepositoryStackTest extends TestCase
 {
-    public function test_has_all_expected_cases(): void
+    public function testHasAllExpectedCases(): void
     {
         $expectedCases = [
             'Laravel', 'Symfony', 'React', 'Vue', 'Angular', 'Node', 'Python',
@@ -22,7 +22,7 @@ class RepositoryStackTest extends TestCase
     }
 
     #[DataProvider('labelProvider')]
-    public function test_returns_correct_label(RepositoryStack $stack, string $expectedLabel): void
+    public function testReturnsCorrectLabel(RepositoryStack $stack, string $expectedLabel): void
     {
         $this->assertEquals($expectedLabel, $stack->label());
     }
@@ -53,7 +53,7 @@ class RepositoryStackTest extends TestCase
     }
 
     #[DataProvider('iconProvider')]
-    public function test_returns_correct_icon(RepositoryStack $stack, string $expectedIcon): void
+    public function testReturnsCorrectIcon(RepositoryStack $stack, string $expectedIcon): void
     {
         $this->assertEquals($expectedIcon, $stack->icon());
     }
@@ -84,7 +84,7 @@ class RepositoryStackTest extends TestCase
     }
 
     #[DataProvider('extensionsProvider')]
-    public function test_returns_correct_extensions(RepositoryStack $stack, array $expectedExtensions): void
+    public function testReturnsCorrectExtensions(RepositoryStack $stack, array $expectedExtensions): void
     {
         $this->assertEquals($expectedExtensions, $stack->extensions());
     }
@@ -115,7 +115,7 @@ class RepositoryStackTest extends TestCase
     }
 
     #[DataProvider('detectorMethodProvider')]
-    public function test_returns_correct_detector_method(RepositoryStack $stack, string $expectedMethod): void
+    public function testReturnsCorrectDetectorMethod(RepositoryStack $stack, string $expectedMethod): void
     {
         $this->assertEquals($expectedMethod, $stack->detectorMethod());
     }

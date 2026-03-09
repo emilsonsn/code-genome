@@ -20,7 +20,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->repository = new RepositoryAnalysisRepository;
     }
 
-    public function test_finds_analysis_by_url(): void
+    public function testFindsAnalysisByUrl(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/laravel/laravel',
@@ -36,14 +36,14 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->assertEquals($analysis->id, $found->id);
     }
 
-    public function test_returns_null_when_url_not_found(): void
+    public function testReturnsNullWhenUrlNotFound(): void
     {
         $found = $this->repository->findByUrl('https://github.com/non/existent');
 
         $this->assertNull($found);
     }
 
-    public function test_creates_new_analysis(): void
+    public function testCreatesNewAnalysis(): void
     {
         $analysis = $this->repository->create(
             'https://github.com/owner/repo',
@@ -60,7 +60,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->assertEquals(['total_files' => 100], $analysis->metrics);
     }
 
-    public function test_generates_slug_from_owner_and_name(): void
+    public function testGeneratesSlugFromOwnerAndName(): void
     {
         $analysis = $this->repository->create(
             'https://github.com/My-Owner/My-Repo',
@@ -72,7 +72,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->assertEquals('my-owner-my-repo', $analysis->slug);
     }
 
-    public function test_handles_special_characters_in_slug(): void
+    public function testHandlesSpecialCharactersInSlug(): void
     {
         $analysis = $this->repository->create(
             'https://github.com/owner/repo-name_v2.0',
@@ -86,7 +86,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
     }
 
     #[DataProvider('urlProvider')]
-    public function test_extracts_repo_info_from_url(string $url, string $expectedOwner, string $expectedName): void
+    public function testExtractsRepoInfoFromUrl(string $url, string $expectedOwner, string $expectedName): void
     {
         $info = $this->repository->extractRepoInfo($url);
 
@@ -125,7 +125,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         ];
     }
 
-    public function test_handles_invalid_url_gracefully(): void
+    public function testHandlesInvalidUrlGracefully(): void
     {
         // For invalid URLs, parse_url treats the input as a path
         // So 'not-a-url' becomes the first path segment (owner)
@@ -135,7 +135,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->assertNull($info['repository_name']);
     }
 
-    public function test_handles_url_without_path(): void
+    public function testHandlesUrlWithoutPath(): void
     {
         $info = $this->repository->extractRepoInfo('https://github.com');
 
@@ -143,7 +143,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->assertNull($info['repository_name']);
     }
 
-    public function test_handles_url_with_only_owner(): void
+    public function testHandlesUrlWithOnlyOwner(): void
     {
         $info = $this->repository->extractRepoInfo('https://github.com/owner');
 
@@ -151,7 +151,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $this->assertNull($info['repository_name']);
     }
 
-    public function test_persists_analysis_to_database(): void
+    public function testPersistsAnalysisToDatabase(): void
     {
         $this->repository->create(
             'https://github.com/test/test',
@@ -167,7 +167,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         ]);
     }
 
-    public function test_stores_complex_metrics_as_json(): void
+    public function testStoresComplexMetricsAsJson(): void
     {
         $metrics = [
             'total_files' => 100,

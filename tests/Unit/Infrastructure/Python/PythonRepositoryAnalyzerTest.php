@@ -16,7 +16,7 @@ class PythonRepositoryAnalyzerTest extends TestCase
         $this->analyzer = new PythonRepositoryAnalyzer;
     }
 
-    public function test_returns_parsed_json_on_success(): void
+    public function testReturnsParsedJsonOnSuccess(): void
     {
         Process::fake([
             '*' => Process::result(
@@ -34,7 +34,7 @@ class PythonRepositoryAnalyzerTest extends TestCase
         $this->assertEquals(50, $result['files_analyzed']);
     }
 
-    public function test_returns_empty_array_on_failure(): void
+    public function testReturnsEmptyArrayOnFailure(): void
     {
         Process::fake([
             '*' => Process::result(
@@ -49,7 +49,7 @@ class PythonRepositoryAnalyzerTest extends TestCase
         $this->assertEmpty($result);
     }
 
-    public function test_returns_empty_array_for_invalid_json(): void
+    public function testReturnsEmptyArrayForInvalidJson(): void
     {
         Process::fake([
             '*' => Process::result(
@@ -64,7 +64,7 @@ class PythonRepositoryAnalyzerTest extends TestCase
         $this->assertEmpty($result);
     }
 
-    public function test_passes_repository_path_to_python_script(): void
+    public function testPassesRepositoryPathToPythonScript(): void
     {
         Process::fake([
             '*' => Process::result(output: '{}', exitCode: 0),
@@ -77,7 +77,7 @@ class PythonRepositoryAnalyzerTest extends TestCase
         });
     }
 
-    public function test_passes_code_extensions_to_python_script(): void
+    public function testPassesCodeExtensionsToPythonScript(): void
     {
         Process::fake([
             '*' => Process::result(output: '{}', exitCode: 0),
@@ -92,7 +92,7 @@ class PythonRepositoryAnalyzerTest extends TestCase
         });
     }
 
-    public function test_runs_from_python_directory(): void
+    public function testRunsFromPythonDirectory(): void
     {
         Process::fake([
             '*' => Process::result(output: '{}', exitCode: 0),
@@ -105,7 +105,7 @@ class PythonRepositoryAnalyzerTest extends TestCase
         });
     }
 
-    public function test_uses_virtual_environment_python(): void
+    public function testUsesVirtualEnvironmentPython(): void
     {
         Process::fake([
             '*' => Process::result(output: '{}', exitCode: 0),
@@ -118,7 +118,7 @@ class PythonRepositoryAnalyzerTest extends TestCase
         });
     }
 
-    public function test_handles_complex_metrics_response(): void
+    public function testHandlesComplexMetricsResponse(): void
     {
         $complexMetrics = [
             'total_loc' => 5000,
@@ -149,7 +149,7 @@ class PythonRepositoryAnalyzerTest extends TestCase
         $this->assertEquals('parseData', $result['most_complex_functions'][0]['name']);
     }
 
-    public function test_handles_empty_repository(): void
+    public function testHandlesEmptyRepository(): void
     {
         Process::fake([
             '*' => Process::result(
@@ -169,7 +169,7 @@ class PythonRepositoryAnalyzerTest extends TestCase
         $this->assertEmpty($result['most_complex_functions']);
     }
 
-    public function test_escapes_path_correctly(): void
+    public function testEscapesPathCorrectly(): void
     {
         Process::fake([
             '*' => Process::result(output: '{}', exitCode: 0),

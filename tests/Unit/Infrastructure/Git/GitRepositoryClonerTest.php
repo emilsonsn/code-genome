@@ -18,7 +18,7 @@ class GitRepositoryClonerTest extends TestCase
         $this->cloner = new GitRepositoryCloner;
     }
 
-    public function test_clones_repository_successfully(): void
+    public function testClonesRepositorySuccessfully(): void
     {
         File::shouldReceive('ensureDirectoryExists')
             ->once()
@@ -36,7 +36,7 @@ class GitRepositoryClonerTest extends TestCase
         $this->assertStringStartsWith(storage_path('app/repos/'), $path);
     }
 
-    public function test_creates_directory_before_cloning(): void
+    public function testCreatesDirectoryBeforeCloning(): void
     {
         File::shouldReceive('ensureDirectoryExists')
             ->once()
@@ -51,7 +51,7 @@ class GitRepositoryClonerTest extends TestCase
         // No assertion needed - shouldReceive validates the call
     }
 
-    public function test_throws_exception_on_clone_failure(): void
+    public function testThrowsExceptionOnCloneFailure(): void
     {
         File::shouldReceive('ensureDirectoryExists')
             ->once()
@@ -70,7 +70,7 @@ class GitRepositoryClonerTest extends TestCase
         $this->cloner->clone('https://github.com/invalid/repo');
     }
 
-    public function test_generates_unique_path_for_each_clone(): void
+    public function testGeneratesUniquePathForEachClone(): void
     {
         File::shouldReceive('ensureDirectoryExists')
             ->twice()
@@ -86,7 +86,7 @@ class GitRepositoryClonerTest extends TestCase
         $this->assertNotEquals($path1, $path2);
     }
 
-    public function test_uses_blobless_clone(): void
+    public function testUsesBloblessClone(): void
     {
         File::shouldReceive('ensureDirectoryExists')
             ->once()
@@ -105,7 +105,7 @@ class GitRepositoryClonerTest extends TestCase
         });
     }
 
-    public function test_does_not_use_depth_flag(): void
+    public function testDoesNotUseDepthFlag(): void
     {
         File::shouldReceive('ensureDirectoryExists')
             ->once()
@@ -124,7 +124,7 @@ class GitRepositoryClonerTest extends TestCase
         });
     }
 
-    public function test_passes_url_to_git_command(): void
+    public function testPassesUrlToGitCommand(): void
     {
         File::shouldReceive('ensureDirectoryExists')
             ->once()
@@ -142,7 +142,7 @@ class GitRepositoryClonerTest extends TestCase
         });
     }
 
-    public function test_returns_path_stored_in_repos_directory(): void
+    public function testReturnsPathStoredInReposDirectory(): void
     {
         File::shouldReceive('ensureDirectoryExists')
             ->once()

@@ -32,7 +32,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         );
     }
 
-    public function test_collects_basic_metrics(): void
+    public function testCollectsBasicMetrics(): void
     {
         $this->setupBasicMocks();
 
@@ -44,7 +44,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertArrayHasKey('total_size_human', $result);
     }
 
-    public function test_detects_languages(): void
+    public function testDetectsLanguages(): void
     {
         $files = $this->createMockFiles([
             ['name' => 'app.php', 'extension' => 'php', 'size' => 1000],
@@ -59,7 +59,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertArrayHasKey('languages', $result);
     }
 
-    public function test_calculates_language_distribution(): void
+    public function testCalculatesLanguageDistribution(): void
     {
         $files = $this->createMockFiles([
             ['name' => 'file1.php', 'extension' => 'php', 'size' => 1000],
@@ -75,7 +75,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertIsArray($result['language_distribution']);
     }
 
-    public function test_detects_readme(): void
+    public function testDetectsReadme(): void
     {
         $files = $this->createMockFiles([
             ['name' => 'README.md', 'extension' => 'md', 'size' => 100],
@@ -88,7 +88,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertTrue($result['has_readme']);
     }
 
-    public function test_detects_missing_readme(): void
+    public function testDetectsMissingReadme(): void
     {
         $files = $this->createMockFiles([
             ['name' => 'app.php', 'extension' => 'php', 'size' => 1000],
@@ -101,7 +101,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertFalse($result['has_readme']);
     }
 
-    public function test_detects_docs_directory(): void
+    public function testDetectsDocsDirectory(): void
     {
         $this->setupBasicMocks();
 
@@ -114,7 +114,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertTrue($result['has_docs']);
     }
 
-    public function test_counts_test_files(): void
+    public function testCountsTestFiles(): void
     {
         $files = $this->createMockFiles([
             ['name' => 'ExampleTest.php', 'extension' => 'php', 'size' => 500, 'path' => '/tests/ExampleTest.php'],
@@ -130,7 +130,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertGreaterThanOrEqual(0, $result['test_files_count']);
     }
 
-    public function test_calculates_test_ratio(): void
+    public function testCalculatesTestRatio(): void
     {
         $this->setupBasicMocks();
 
@@ -140,7 +140,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertIsFloat($result['test_ratio']);
     }
 
-    public function test_detects_dependency_files(): void
+    public function testDetectsDependencyFiles(): void
     {
         $this->setupBasicMocks();
 
@@ -154,7 +154,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertTrue($result['dependency_files']['package.json']);
     }
 
-    public function test_calls_stack_detector(): void
+    public function testCallsStackDetector(): void
     {
         File::shouldReceive('allFiles')->andReturn(collect([]));
         File::shouldReceive('directories')->andReturn(collect([]));
@@ -175,7 +175,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertEquals(['Laravel', 'Vue.js'], $result['stack_signals']);
     }
 
-    public function test_builds_directory_tree(): void
+    public function testBuildsDirectoryTree(): void
     {
         $this->setupBasicMocks();
 
@@ -185,7 +185,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertIsArray($result['directory_tree']);
     }
 
-    public function test_calculates_max_directory_depth(): void
+    public function testCalculatesMaxDirectoryDepth(): void
     {
         $this->setupBasicMocks();
 
@@ -195,7 +195,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertIsInt($result['max_directory_depth']);
     }
 
-    public function test_calculates_average_files_per_directory(): void
+    public function testCalculatesAverageFilesPerDirectory(): void
     {
         $this->setupBasicMocks();
 
@@ -205,7 +205,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertIsFloat($result['avg_files_per_directory']);
     }
 
-    public function test_finds_largest_directories(): void
+    public function testFindsLargestDirectories(): void
     {
         $this->setupBasicMocks();
 
@@ -214,7 +214,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertArrayHasKey('largest_directories', $result);
     }
 
-    public function test_finds_largest_files(): void
+    public function testFindsLargestFiles(): void
     {
         $files = $this->createMockFiles([
             ['name' => 'large.php', 'extension' => 'php', 'size' => 100000],
@@ -229,7 +229,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertArrayHasKey('largest_files', $result);
     }
 
-    public function test_includes_python_metrics(): void
+    public function testIncludesPythonMetrics(): void
     {
         File::shouldReceive('allFiles')->andReturn(collect([]));
         File::shouldReceive('directories')->andReturn(collect([]));
@@ -250,7 +250,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertEquals(5000, $result['python_metrics']['total_loc']);
     }
 
-    public function test_formats_bytes_correctly(): void
+    public function testFormatsBytesCorrectly(): void
     {
         $files = $this->createMockFiles([
             ['name' => 'file.php', 'extension' => 'php', 'size' => 1048576],
@@ -263,7 +263,7 @@ class RepositoryMetricsCollectorTest extends TestCase
         $this->assertStringContainsString('MB', $result['total_size_human']);
     }
 
-    public function test_excludes_git_directory_from_files(): void
+    public function testExcludesGitDirectoryFromFiles(): void
     {
         $files = $this->createMockFiles([
             ['name' => 'app.php', 'extension' => 'php', 'size' => 1000, 'path' => '/src/app.php'],

@@ -61,7 +61,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         parent::tearDown();
     }
 
-    public function test_analyze_returns_cached_result_when_fresh(): void
+    public function testAnalyzeReturnsCachedResultWhenFresh(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/owner/repo',
@@ -85,7 +85,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertEquals(['cached' => 'data'], $result->metrics);
     }
 
-    public function test_analyze_reanalyzes_when_stale(): void
+    public function testAnalyzeReanalyzesWhenStale(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/owner/repo',
@@ -113,7 +113,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertEquals('value', $result->metrics['new_metric']);
     }
 
-    public function test_analyze_creates_new_record_when_not_exists(): void
+    public function testAnalyzeCreatesNewRecordWhenNotExists(): void
     {
         $this->setupMocksForAnalysis();
 
@@ -128,7 +128,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertEquals('newowner', $result->owner);
     }
 
-    public function test_analyze_does_not_reanalyze_when_less_than24_hours(): void
+    public function testAnalyzeDoesNotReanalyzeWhenLessThan24Hours(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/owner/repo',
@@ -154,7 +154,7 @@ class RepositoryAnalyzerServiceTest extends TestCase
         $this->assertEquals(['fresh' => 'data'], $result->metrics);
     }
 
-    public function test_analyze_updates_timestamp_when_reanalyzing(): void
+    public function testAnalyzeUpdatesTimestampWhenReanalyzing(): void
     {
         $analysis = RepositoryAnalysis::create([
             'repository_url' => 'https://github.com/owner/repo',
