@@ -11,7 +11,8 @@ export default defineConfig({
                 'resources/css/loading.css',
                 'resources/js/loading.js',
                 'resources/css/particles.css',
-                'resources/js/particles.js'
+                'resources/js/particles.js',
+                'resources/css/analysis.css'
             ],
             refresh: true,
         }),

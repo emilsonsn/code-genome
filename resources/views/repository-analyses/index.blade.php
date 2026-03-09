@@ -6,7 +6,8 @@
     <title>Code Genome</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
-    @vite('resources/css/analysis.css')
+@vite(['resources/css/analysis.css'])
+
 </head>
 <body class="bg-slate-950 text-white min-h-screen">
     <div class="max-w-4xl mx-auto px-6 py-20">
