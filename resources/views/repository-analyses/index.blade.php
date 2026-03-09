@@ -6,10 +6,18 @@
     <title>Code Genome</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
-@vite(['resources/css/analysis.css'])
+@vite([
+    'resources/css/analysis.css',
+    'resources/css/loading.css',
+    'resources/css/particles.css',
+    'resources/js/loading.js',
+    'resources/js/particles.js'
+])
 
 </head>
 <body class="bg-slate-950 text-white min-h-screen">
+    <div id="particles-container" class="particles-container"></div>
+
     <div class="max-w-4xl mx-auto px-6 py-20">
         <div class="text-center mb-12">
             <h1 class="text-5xl font-bold mb-4">Code Genome</h1>
