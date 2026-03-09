@@ -1,0 +1,31 @@
+.explore-btn{
+    display:inline-block;
+    padding:12px 28px;
+    border-radius:14px;
+    font-weight:600;
+
+    background:linear-gradient(
+        270deg,
+        #454d4e,
+        #6366f1,
+        #18f368,
+        #ea6e08,
+        #003b44
+    );
+
+    background-size:400% 400%;
+    color:white;
+
+    transition:transform .2s ease;
+    animation:exploreGradient 6s ease infinite;
+}
+
+.explore-btn:hover{
+    transform:translateY(-2px) scale(1.03);
+}
+
+@keyframes exploreGradient{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
