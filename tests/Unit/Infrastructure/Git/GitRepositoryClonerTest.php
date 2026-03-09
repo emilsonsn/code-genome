@@ -105,25 +105,6 @@ class GitRepositoryClonerTest extends TestCase
         });
     }
 
-    public function testDoesNotUseDepthFlag(): void
-    {
-        File::shouldReceive('ensureDirectoryExists')
-            ->once()
-            ->andReturnTrue();
-
-        Process::fake([
-            '*' => Process::result(output: '', exitCode: 0),
-        ]);
-
-        $this->cloner->clone('https://github.com/owner/repo');
-
-        Process::assertRan(function ($process) {
-            $command = implode(' ', $process->command);
-
-            return ! str_contains($command, '--depth');
-        });
-    }
-
     public function testPassesUrlToGitCommand(): void
     {
         File::shouldReceive('ensureDirectoryExists')
