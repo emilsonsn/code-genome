@@ -6,13 +6,15 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
+                'resources/css/analysis.css',
                 'resources/css/app.css',
-                'resources/js/app.js',
+                'resources/css/genome.css',
                 'resources/css/loading.css',
-                'resources/js/loading.js',
                 'resources/css/particles.css',
+                'resources/js/app.js',
+                'resources/js/loading.js',
+                'resources/js/genome.js',
                 'resources/js/particles.js',
-                'resources/css/analysis.css'
             ],
             refresh: true,
         }),
