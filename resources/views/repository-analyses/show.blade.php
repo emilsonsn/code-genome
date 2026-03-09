@@ -28,6 +28,15 @@
            class="w-full md:w-auto text-center bg-gradient-to-r from-indigo-600 to-emerald-600 hover:from-indigo-500 hover:to-emerald-500 px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-indigo-500/25">
             New Analysis
         </a>
+
+
+        <div class="flex items-center gap-2 text-xs text-slate-500 mt-2">
+            <i class="fa-solid fa-clock"></i>
+            <span>
+                Last analysis:
+                {{ $analysis->updated_at->format('M d, Y H:i') }}
+            </span>
+        </div>        
     </div>
 
     @if (!empty($analysis->metrics['github']))
@@ -213,19 +222,31 @@
                 Project DNA
             </h2>
 
-            @foreach ($analysis->metrics['scores'] as $label => $value)
+            <div class="mb-8 text-center">
+                <div class="text-5xl font-bold text-{{ $scores['grade_color'] }}-400">
+                    {{ $scores['overall'] }}
+                </div>
+
+                <div class="mt-2 text-lg text-slate-300">
+                    {{ $scores['grade_label'] }}
+                </div>
+            </div>
+
+            @foreach ($scoreMetrics as $metric)
+
                 <div class="mb-5">
+
                     <div class="flex justify-between mb-2">
-                        <span class="capitalize">{{ str_replace('_',' ',$label) }}</span>
-                        <span>{{ $value }}/100</span>
+                        <span class="capitalize">{{ str_replace('_',' ',$metric) }}</span>
+                        <span>{{ $scores[$metric] }}/100</span>
                     </div>
 
                     <div class="w-full bg-slate-800 rounded-full h-4">
-                        <div class="bg-indigo-500 h-4 rounded-full"
-                             style="width: {{ $value }}%">
+                        <div
+                            class="bg-indigo-500 h-4 rounded-full"
+                            style="width: {{ $scores[$metric] }}%">
                         </div>
                     </div>
-
                 </div>
             @endforeach
         </div>

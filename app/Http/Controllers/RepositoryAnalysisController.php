@@ -39,8 +39,20 @@ class RepositoryAnalysisController extends Controller
 
     public function show(RepositoryAnalysis $repositoryAnalysis): View
     {
+        $scores = $repositoryAnalysis->metrics['scores'] ?? [];
+
+        $scoreMetrics = [
+            'documentation',
+            'tests',
+            'structure',
+            'size',
+            'maintainability',
+        ];
+
         return view('repository-analyses.show', [
             'analysis' => $repositoryAnalysis,
+            'scores' => $scores,
+            'scoreMetrics' => $scoreMetrics,
         ]);
     }
 }
