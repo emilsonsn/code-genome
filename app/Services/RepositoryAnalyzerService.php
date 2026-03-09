@@ -45,35 +45,41 @@ class RepositoryAnalyzerService
 
         $repoInfo = $this->repository->extractRepoInfo($this->repositoryUrl);
 
-        $path = $this->cloner->clone($this->repositoryUrl);
+        $path = null;
 
-        $metrics = $this->metricsCollector->collect($path);
+        try {
+            $path = $this->cloner->clone($this->repositoryUrl);
 
-        $githubData = $this->fetchGitHubData(
-            $repoInfo['owner'],
-            $repoInfo['repository_name']
-        );
+            $metrics = $this->metricsCollector->collect($path);
 
-        $scores = $this->scoreCalculator->calculate($metrics);
-
-        $pythonMetrics = $this->pythonAnalyzer->analyze($path);
-
-        $metrics = array_merge($metrics, $pythonMetrics);
-        $metrics['github'] = $githubData;
-        $metrics['scores'] = $scores;
-
-        if ($existing) {
-            $this->analysis = $this->repository->update($existing, $metrics);
-        } else {
-            $this->analysis = $this->repository->create(
-                $this->repositoryUrl,
-                $repoInfo['repository_name'],
+            $githubData = $this->fetchGitHubData(
                 $repoInfo['owner'],
-                $metrics
+                $repoInfo['repository_name']
             );
-        }
 
-        File::deleteDirectory($path);
+            $scores = $this->scoreCalculator->calculate($metrics);
+
+            $pythonMetrics = $this->pythonAnalyzer->analyze($path);
+
+            $metrics = array_merge($metrics, $pythonMetrics);
+            $metrics['github'] = $githubData;
+            $metrics['scores'] = $scores;
+
+            if ($existing) {
+                $this->analysis = $this->repository->update($existing, $metrics);
+            } else {
+                $this->analysis = $this->repository->create(
+                    $this->repositoryUrl,
+                    $repoInfo['repository_name'],
+                    $repoInfo['owner'],
+                    $metrics
+                );
+            }
+        } finally {
+            if ($path) {
+                File::deleteDirectory($path);
+            }
+        }
 
         return $this;
     }
