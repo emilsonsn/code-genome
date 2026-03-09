@@ -16,6 +16,7 @@
 
 </head>
 <body class="bg-slate-950 text-white min-h-screen">
+    @include('components.loading')
     <div id="particles-container" class="particles-container"></div>
 
     <div class="max-w-4xl mx-auto px-6 py-20">
@@ -25,7 +26,7 @@
         </div>
 
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
-            <form action="{{ route('repository-analyses.store') }}" method="POST" class="space-y-6">
+            <form id="analyze-form" action="{{ route('repository-analyses.store') }}" method="POST" class="space-y-6">
                 @csrf
 
                 <div>
