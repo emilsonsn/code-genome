@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/css/genome.css',
                 'resources/css/loading.css',
                 'resources/css/particles.css',
+                'resources/css/repository-card.css',
                 'resources/js/app.js',
                 'resources/js/loading.js',
                 'resources/js/genome.js',
