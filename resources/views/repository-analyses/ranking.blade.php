@@ -22,6 +22,9 @@
         <div class="ranking-header">
             <h1 class="text-5xl font-bold mb-2">🧬 Genome Ranking</h1>
             <p class="text-slate-300 text-lg">Discover the healthiest repositories</p>
+            <p class="text-slate-500 text-sm mt-4">
+                <i class="fa-solid fa-clock"></i> Last verified: {{ $lastCacheUpdate->diffForHumans() }}
+            </p>
         </div>
 
         <div class="tabs-container">
