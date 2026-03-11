@@ -7,16 +7,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     @vite([
         'resources/css/genome.css',
-        'resources/js/genome.js', 
+        'resources/css/tutorial.css',
+        'resources/js/genome.js',
+        'resources/js/tutorial.js',
         'resources/css/repository-card.css'
     ])
 </head>
 <body>
     <div id="labels"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
     <script>
         window.repositories = @json($analyses);
     </script>
 </body>
 </html>
 
+@include('components.tutorial')
 @include('components.repository-card')

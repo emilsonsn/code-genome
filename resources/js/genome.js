@@ -211,7 +211,15 @@ function hideRepositoryCard() {
     repoCard.classList.add('hidden')
 }
 
+function isEventInsideRepoCard(event) {
+    return Boolean(event.target?.closest('#repo-card'))
+}
+
 function handlePointerDown(event) {
+    if (isEventInsideRepoCard(event)) {
+        return
+    }
+
     pointerDown = true
     dragMoved = false
     startX = event.clientX
@@ -219,6 +227,10 @@ function handlePointerDown(event) {
 }
 
 function handlePointerMove(event) {
+    if (isEventInsideRepoCard(event)) {
+        return
+    }
+
     if (!pointerDown) {
         return
     }
@@ -232,6 +244,12 @@ function handlePointerMove(event) {
 }
 
 function handlePointerUp(event) {
+    if (isEventInsideRepoCard(event)) {
+        pointerDown = false
+        dragMoved = false
+        return
+    }
+
     if (!pointerDown) {
         return
     }
@@ -299,6 +317,28 @@ repositories.forEach((repo) => {
 })
 
 repoCardClose.addEventListener('click', hideRepositoryCard)
+
+// Keep card interactions isolated from the 3D scene behind it.
+repoCard.addEventListener('pointerdown', (event) => event.stopPropagation())
+repoCard.addEventListener('pointerup', (event) => event.stopPropagation())
+repoCard.addEventListener('click', (event) => event.stopPropagation())
+
+// Tutorial overlay initialization
+const tutorialOverlay = document.getElementById('tutorial-overlay')
+
+function hideTutorial() {
+    tutorialOverlay.classList.add('fade-out')
+    setTimeout(() => {
+        tutorialOverlay.style.display = 'none'
+        tutorialOverlay.style.pointerEvents = 'none'
+    }, 500)
+}
+
+// Hide tutorial on click
+tutorialOverlay.addEventListener('click', hideTutorial)
+
+// Auto-hide tutorial after 4 seconds
+setTimeout(hideTutorial, 4000)
 
 window.addEventListener('pointerdown', handlePointerDown)
 window.addEventListener('pointermove', handlePointerMove)
