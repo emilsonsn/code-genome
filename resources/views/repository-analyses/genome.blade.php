@@ -16,6 +16,11 @@
 <body>
     <div id="labels"></div>
 
+    <!-- Back Button -->
+    <a href="javascript:history.back()" class="floating-back-button" title="Voltar">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
     <script>
         window.repositories = @json($analyses);
