@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<!-- Tutorial Overlay -->
 <div id="tutorial-overlay" class="tutorial-overlay">
     <div class="tutorial-container">
         <div class="tutorial-instruction">

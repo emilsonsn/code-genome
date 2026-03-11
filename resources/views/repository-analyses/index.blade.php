@@ -48,12 +48,18 @@
                 </button>
             </form>
 
-            <div class="mt-6 text-center">
+            <div class="mt-6 text-center flex gap-4 justify-center">
                 <a
                     href="{{ route('repository-analyses.genome') }}"
                     class="explore-btn"
                 >
                     🧬 Explore Genomes
+                </a>
+                <a
+                    href="{{ route('repository-analyses.ranking') }}"
+                    class="explore-btn"
+                >
+                    🏆 Ranking
                 </a>
             </div>
         </div>        
