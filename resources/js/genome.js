@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 const repositories = window.repositories ?? []
-const MIN_DISTANCE = 18
+const MIN_DISTANCE = 25
 
 const scene = new THREE.Scene()
 const raycaster = new THREE.Raycaster()
