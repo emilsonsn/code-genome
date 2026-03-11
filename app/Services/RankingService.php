@@ -33,10 +33,12 @@ class RankingService
                     'url' => route('repository-analyses.show', $analysis),
                 ];
             })
-            ->sortByDesc(function ($repo) {
-                return $repo['overall'];
+            ->sortBy(function ($repo) {
+                return [
+                    -intval($repo['overall']),
+                    -$repo['updated_at']->getTimestamp()
+                ];
             })
-            ->sortByDesc('updated_at')
             ->take($limit)
             ->values();
     }
