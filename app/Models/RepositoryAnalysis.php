@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class RepositoryAnalysis extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'repository_url',
         'repository_name',
