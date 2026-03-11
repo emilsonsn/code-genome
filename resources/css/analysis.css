@@ -1,8 +1,12 @@
 .explore-btn{
-    display:inline-block;
-    padding:12px 28px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:10px 16px;
     border-radius:14px;
-    font-weight:600;
+    font-weight:700;
+    font-size:1rem;
     background:linear-gradient(
         270deg,
         #454d4e,
@@ -21,6 +25,65 @@
 
 .explore-btn:hover{
     transform:translateY(-2px) scale(1.03);
+}
+
+.subtle-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:10px 14px;
+    border-radius:14px;
+    font-weight:600;
+    font-size:.9rem;
+    color:#cbd5e1;
+    background:rgba(15,23,42,.65);
+    border:1px solid rgba(148,163,184,.35);
+    transition:all .2s ease;
+}
+
+.subtle-btn:hover{
+    color:#f8fafc;
+    border-color:rgba(148,163,184,.7);
+    background:rgba(30,41,59,.8);
+    transform:translateY(-1px);
+}
+
+.star-cta{
+    color:#facc15;
+    border-color:rgba(250,204,21,.55);
+    background:rgba(250,204,21,.08);
+    font-weight:700;
+}
+
+.star-cta i,
+.star-cta span{
+    color:#facc15;
+}
+
+.star-cta:hover{
+    color:#fde047;
+    border-color:rgba(250,204,21,.8);
+    background:rgba(250,204,21,.14);
+}
+
+.action-links{
+    margin-top:1.5rem;
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:1rem;
+}
+
+.action-links .explore-btn,
+.action-links .subtle-btn{
+    width:100%;
+}
+
+@media (min-width: 1024px){
+    .action-links{
+        grid-template-columns:repeat(4, minmax(0, 1fr));
+    }
 }
 
 @keyframes exploreGradient{

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Genome</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 @vite([
     'resources/css/analysis.css',
@@ -48,21 +49,43 @@
                 </button>
             </form>
 
-            <div class="mt-6 text-center flex gap-4 justify-center">
+            <div class="action-links">
                 <a
                     href="{{ route('repository-analyses.genome') }}"
                     class="explore-btn"
                 >
-                    🧬 Explore Genomes
+                    <i class="fa-solid fa-dna"></i> Explore
                 </a>
                 <a
                     href="{{ route('repository-analyses.ranking') }}"
                     class="explore-btn"
                 >
-                    🏆 Ranking
+                    <i class="fa-solid fa-trophy"></i> Ranking
                 </a>
+                <a
+                    href="https://github.com/emilsonsn/code-genome/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="subtle-btn star-cta"
+                >
+                    <i class="fa-solid fa-star"></i>
+                    <span>Leave a Star on GitHub</span>
+                </a>
+                <a
+                    href="http://emilsonsouza.com.br/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="subtle-btn"
+                >
+                    <i class="fa-solid fa-globe"></i> My Website
+                </a>
+                
             </div>
         </div>        
+
+        <p class="text-center text-slate-500 text-sm mt-6">
+            Built by <span class="text-slate-300 font-semibold">emilsonsn</span>
+        </p>
     </div>
 </body>
 </html>
