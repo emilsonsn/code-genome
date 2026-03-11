@@ -323,23 +323,6 @@ repoCard.addEventListener('pointerdown', (event) => event.stopPropagation())
 repoCard.addEventListener('pointerup', (event) => event.stopPropagation())
 repoCard.addEventListener('click', (event) => event.stopPropagation())
 
-// Tutorial overlay initialization
-const tutorialOverlay = document.getElementById('tutorial-overlay')
-
-function hideTutorial() {
-    tutorialOverlay.classList.add('fade-out')
-    setTimeout(() => {
-        tutorialOverlay.style.display = 'none'
-        tutorialOverlay.style.pointerEvents = 'none'
-    }, 500)
-}
-
-// Hide tutorial on click
-tutorialOverlay.addEventListener('click', hideTutorial)
-
-// Auto-hide tutorial after 4 seconds
-setTimeout(hideTutorial, 4000)
-
 window.addEventListener('pointerdown', handlePointerDown)
 window.addEventListener('pointermove', handlePointerMove)
 window.addEventListener('pointerup', handlePointerUp)
