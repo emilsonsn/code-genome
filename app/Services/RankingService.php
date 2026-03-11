@@ -34,8 +34,9 @@ class RankingService
                 ];
             })
             ->sortByDesc(function ($repo) {
-                return $repo['overall'] * 10000 + $repo['updated_at']->getTimestamp();
+                return $repo['overall'];
             })
+            ->sortByDesc('updated_at')
             ->take($limit)
             ->values();
     }
