@@ -12,7 +12,7 @@
     ])
 </head>
 <body class="bg-slate-950 text-white">
-    <a href="{{ route('repository-analyses.index') }}" class="floating-back-button-ranking" title="Voltar">
+    <a href="{{ route('repository-analyses.index') }}" class="floating-back-button-ranking" title="Back">
         <i class="fa-solid fa-arrow-left"></i>
     </a>
 
@@ -20,17 +20,17 @@
 
     <div class="ranking-container">
         <div class="ranking-header">
-            <h1 class="text-5xl font-bold mb-2">🧬 Ranking de Genomas</h1>
-            <p class="text-slate-300 text-lg">Descubra os repositórios mais saudáveis</p>
+            <h1 class="text-5xl font-bold mb-2">🧬 Genome Ranking</h1>
+            <p class="text-slate-300 text-lg">Discover the healthiest repositories</p>
         </div>
 
         <div class="tabs-container">
             <div class="tabs">
                 <button class="tab-button active" data-tab="repositories">
-                    <i class="fa-solid fa-star"></i> Repositórios Mais Bem Avaliados
+                    <i class="fa-solid fa-star"></i> Top Rated Repositories
                 </button>
                 <button class="tab-button" data-tab="developers">
-                    <i class="fa-solid fa-users"></i> Desenvolvedores Topo
+                    <i class="fa-solid fa-users"></i> Top Developers
                 </button>
             </div>
         </div>
@@ -99,14 +99,14 @@
                             </div>
 
                             <a href="{{ $repo['url'] }}" class="view-button">
-                                Ver Análise <i class="fa-solid fa-arrow-right"></i>
+                                View Analysis <i class="fa-solid fa-arrow-right"></i>
                             </a>
                         </div>
                     </div>
                 @empty
                     <div class="empty-state">
                         <i class="fa-solid fa-dna"></i>
-                        <p>Nenhum repositório analisado ainda</p>
+                        <p>No repositories analyzed yet</p>
                     </div>
                 @endforelse
             </div>
@@ -136,13 +136,13 @@
                             <h3 class="dev-name">{{ $developer['owner'] }}</h3>
                             
                             <div class="dev-score">
-                                <div class="score-label">Score Médio</div>
+                                <div class="score-label">Average Score</div>
                                 <div class="score-big">{{ $developer['average_score'] }}</div>
                             </div>
 
                             <div class="repo-count">
                                 <i class="fa-solid fa-folder"></i>
-                                {{ $developer['repository_count'] }} repositório(s)
+                                {{ $developer['repository_count'] }} {{ $developer['repository_count'] === 1 ? 'repository' : 'repositories' }}
                             </div>
 
                             <div class="dev-repos-list">
@@ -158,7 +158,7 @@
                 @empty
                     <div class="empty-state">
                         <i class="fa-solid fa-dna"></i>
-                        <p>Nenhum desenvolvedor registrado ainda</p>
+                        <p>No developers registered yet</p>
                     </div>
                 @endforelse
             </div>

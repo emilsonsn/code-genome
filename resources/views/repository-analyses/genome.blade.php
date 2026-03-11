@@ -16,7 +16,7 @@
 <body>
     <div id="labels"></div>
 
-    <a href="javascript:history.back()" class="floating-back-button" title="Voltar">
+    <a href="javascript:history.back()" class="floating-back-button" title="Back">
         <i class="fa-solid fa-arrow-left"></i>
     </a>
 
