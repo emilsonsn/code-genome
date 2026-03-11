@@ -38,7 +38,7 @@
         <div id="repositories-tab" class="tab-content active">
             <div class="rankings-grid">
                 @forelse($topRepositories as $index => $repo)
-                    <div class="ranking-card repository-card" style="animation-delay: {{ ($index % 3) * 0.1 }}s">
+                    <div class="ranking-card repository-card" style="animation-delay: {{ ($index % 4) * 0.1 }}s">
                         <div class="position-badge">
                             @if($index < 3)
                                 @if($index === 0)
