@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services;
 
 use App\Clients\GitHub\GitHubRepositoryClient;
+use App\Exceptions\RepositoryAnalysisInProgressException;
 use App\Infrastructure\Git\GitRepositoryCloner;
 use App\Infrastructure\Metrics\RepositoryMetricsCollector;
 use App\Infrastructure\Python\PythonRepositoryAnalyzer;
@@ -10,6 +11,8 @@ use App\Infrastructure\Score\RepositoryScoreCalculator;
 use App\Models\RepositoryAnalysis;
 use App\Repositories\RepositoryAnalysisRepository;
 use App\Services\RepositoryAnalyzerService;
+use Illuminate\Contracts\Cache\Lock;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Mockery;
 use Mockery\MockInterface;
@@ -404,6 +407,68 @@ class RepositoryAnalyzerServiceTest extends TestCase
             ->object();
 
         $this->assertInstanceOf(RepositoryAnalysis::class, $result);
+    }
+
+    public function testThrowsWhenRepositoryAnalysisLockIsNotAcquired(): void
+    {
+        $this->repository
+            ->shouldReceive('findByUrl')
+            ->with('https://github.com/owner/repo')
+            ->andReturn(null);
+
+        $lock = Mockery::mock(Lock::class);
+
+        Cache::shouldReceive('lock')
+            ->once()
+            ->with(Mockery::type('string'), 120)
+            ->andReturn($lock);
+
+        $lock->shouldReceive('get')->once()->andReturn(false);
+
+        $this->cloner->shouldNotReceive('clone');
+
+        $this->expectException(RepositoryAnalysisInProgressException::class);
+
+        $this->service
+            ->setRepositoryUrl('https://github.com/owner/repo.git/')
+            ->analyze();
+    }
+
+    public function testReleasesLockWhenAnalysisFailsAfterLockAcquisition(): void
+    {
+        $url = 'https://github.com/owner/repo';
+
+        $this->repository
+            ->shouldReceive('findByUrl')
+            ->with($url)
+            ->andReturn(null);
+
+        $this->repository
+            ->shouldReceive('extractRepoInfo')
+            ->with($url)
+            ->andReturn(['owner' => 'owner', 'repository_name' => 'repo']);
+
+        $lock = Mockery::mock(Lock::class);
+
+        Cache::shouldReceive('lock')
+            ->once()
+            ->with(Mockery::type('string'), 120)
+            ->andReturn($lock);
+
+        $lock->shouldReceive('get')->once()->andReturn(true);
+        $lock->shouldReceive('release')->once();
+
+        $this->cloner
+            ->shouldReceive('clone')
+            ->once()
+            ->with($url)
+            ->andThrow(new \RuntimeException('clone failed'));
+
+        $this->expectException(\RuntimeException::class);
+
+        $this->service
+            ->setRepositoryUrl($url)
+            ->analyze();
     }
 
     /**

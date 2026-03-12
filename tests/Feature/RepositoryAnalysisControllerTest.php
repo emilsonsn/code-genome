@@ -90,6 +90,43 @@ class RepositoryAnalysisControllerTest extends TestCase
         ]);
     }
 
+    public function testStoreAppliesRateLimitOnRepeatedRequests(): void
+    {
+        $analysis = new RepositoryAnalysis([
+            'slug' => 'owner-repo',
+            'repository_url' => 'https://github.com/owner/repo',
+            'repository_name' => 'repo',
+            'owner' => 'owner',
+            'metrics' => [],
+        ]);
+
+        /** @var MockInterface $service */
+        $service = Mockery::mock(RepositoryAnalyzerService::class);
+        $service->shouldReceive('setRepositoryUrl')->times(6)->andReturnSelf();
+        $service->shouldReceive('analyze')->times(6)->andReturnSelf();
+        $service->shouldReceive('object')->times(6)->andReturn($analysis);
+
+        $this->app->instance(RepositoryAnalyzerService::class, $service);
+
+        $ip = '10.1.1.'.random_int(10, 240);
+
+        for ($i = 0; $i < 6; $i++) {
+            $response = $this->withServerVariables(['REMOTE_ADDR' => $ip])
+                ->post(route('repository-analyses.store'), [
+                    'repository_url' => 'https://github.com/owner/repo',
+                ]);
+
+            $response->assertRedirect(route('repository-analyses.show', $analysis));
+        }
+
+        $rateLimitedResponse = $this->withServerVariables(['REMOTE_ADDR' => $ip])
+            ->post(route('repository-analyses.store'), [
+                'repository_url' => 'https://github.com/owner/repo',
+            ]);
+
+        $rateLimitedResponse->assertStatus(429);
+    }
+
     protected function tearDown(): void
     {
         Mockery::close();
