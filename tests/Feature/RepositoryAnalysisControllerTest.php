@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Exceptions\RepositoryAnalysisInProgressException;
 use App\Models\RepositoryAnalysis;
 use App\Services\RepositoryAnalyzerService;
 use Mockery;
@@ -62,6 +63,31 @@ class RepositoryAnalysisControllerTest extends TestCase
             'repository_url' => 'Nao foi possivel analisar este repositorio agora. Verifique a URL e tente novamente.',
         ]);
         $response->assertSessionHasInput('repository_url', 'https://github.com/owner/repo');
+    }
+
+    public function testStoreReturnsFriendlyErrorWhenAnalysisIsAlreadyRunning(): void
+    {
+        /** @var MockInterface $service */
+        $service = Mockery::mock(RepositoryAnalyzerService::class);
+        $service->shouldReceive('setRepositoryUrl')
+            ->once()
+            ->with('https://github.com/owner/repo')
+            ->andReturnSelf();
+        $service->shouldReceive('analyze')
+            ->once()
+            ->andThrow(new RepositoryAnalysisInProgressException);
+
+        $this->app->instance(RepositoryAnalyzerService::class, $service);
+
+        $response = $this->from(route('repository-analyses.index'))
+            ->post(route('repository-analyses.store'), [
+                'repository_url' => 'https://github.com/owner/repo',
+            ]);
+
+        $response->assertRedirect(route('repository-analyses.index'));
+        $response->assertSessionHasErrors([
+            'repository_url' => 'Esse repositorio ja esta sendo analisado. Aguarde alguns segundos e tente novamente.',
+        ]);
     }
 
     protected function tearDown(): void

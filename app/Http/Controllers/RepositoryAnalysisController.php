@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\RepositoryAnalysisInProgressException;
 use App\Models\RepositoryAnalysis;
 use App\Services\RepositoryAnalyzerService;
 use Illuminate\Contracts\View\View;
@@ -58,6 +59,12 @@ class RepositoryAnalysisController extends Controller
                 ->setRepositoryUrl($data['repository_url'])
                 ->analyze()
                 ->object();
+        } catch (RepositoryAnalysisInProgressException) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'repository_url' => 'Esse repositorio ja esta sendo analisado. Aguarde alguns segundos e tente novamente.',
+                ]);
         } catch (Throwable) {
             return back()
                 ->withInput()

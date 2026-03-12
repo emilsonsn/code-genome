@@ -3,12 +3,15 @@
 namespace App\Services;
 
 use App\Clients\GitHub\GitHubRepositoryClient;
+use App\Exceptions\RepositoryAnalysisInProgressException;
 use App\Infrastructure\Git\GitRepositoryCloner;
 use App\Infrastructure\Metrics\RepositoryMetricsCollector;
 use App\Infrastructure\Python\PythonRepositoryAnalyzer;
 use App\Infrastructure\Score\RepositoryScoreCalculator;
 use App\Models\RepositoryAnalysis;
 use App\Repositories\RepositoryAnalysisRepository;
+use Illuminate\Contracts\Cache\Lock;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 
 class RepositoryAnalyzerService
@@ -28,7 +31,7 @@ class RepositoryAnalyzerService
 
     public function setRepositoryUrl(string $url): self
     {
-        $this->repositoryUrl = $url;
+        $this->repositoryUrl = $this->normalizeRepositoryUrl($url);
 
         return $this;
     }
@@ -41,6 +44,13 @@ class RepositoryAnalyzerService
             $this->analysis = $existing;
 
             return $this;
+        }
+
+        $lock = Cache::lock($this->lockKey(), 120);
+        $lockAcquired = $lock->get();
+
+        if (! $lockAcquired) {
+            throw new RepositoryAnalysisInProgressException;
         }
 
         $repoInfo = $this->repository->extractRepoInfo($this->repositoryUrl);
@@ -79,6 +89,8 @@ class RepositoryAnalyzerService
             if ($path) {
                 File::deleteDirectory($path);
             }
+
+            $this->releaseLock($lock, $lockAcquired);
         }
 
         return $this;
@@ -106,5 +118,37 @@ class RepositoryAnalyzerService
             'languages' => $languages,
             'contributors_count' => count($contributors),
         ];
+    }
+
+    private function lockKey(): string
+    {
+        return 'repository-analysis:'.sha1($this->repositoryUrl);
+    }
+
+    private function releaseLock(Lock $lock, bool $lockAcquired): void
+    {
+        if (! $lockAcquired) {
+            return;
+        }
+
+        $lock->release();
+    }
+
+    private function normalizeRepositoryUrl(string $url): string
+    {
+        $trimmed = trim($url);
+
+        if ($trimmed === '') {
+            return $trimmed;
+        }
+
+        $withoutTrailingSlash = rtrim($trimmed, '/');
+        $withoutGitSuffix = preg_replace('/\.git$/i', '', $withoutTrailingSlash);
+
+        if (! is_string($withoutGitSuffix)) {
+            return $withoutTrailingSlash;
+        }
+
+        return $withoutGitSuffix;
     }
 }

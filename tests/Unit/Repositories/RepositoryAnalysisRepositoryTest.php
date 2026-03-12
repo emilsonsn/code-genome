@@ -34,6 +34,11 @@ class RepositoryAnalysisRepositoryTest extends TestCase
 
         $this->assertNotNull($found);
         $this->assertEquals($analysis->id, $found->id);
+
+        $normalizedMatch = $this->repository->findByUrl('https://github.com/LARAVEL/laravel/');
+
+        $this->assertNotNull($normalizedMatch);
+        $this->assertEquals($analysis->id, $normalizedMatch->id);
     }
 
     public function testReturnsNullWhenUrlNotFound(): void
@@ -120,7 +125,7 @@ class RepositoryAnalysisRepositoryTest extends TestCase
             'github with .git extension' => [
                 'https://github.com/owner/repo.git',
                 'owner',
-                'repo.git',
+                'repo',
             ],
         ];
     }
@@ -189,5 +194,17 @@ class RepositoryAnalysisRepositoryTest extends TestCase
         $retrieved = RepositoryAnalysis::find($analysis->id);
 
         $this->assertEquals($metrics, $retrieved->metrics);
+    }
+
+    public function testNormalizesUrlBeforePersisting(): void
+    {
+        $analysis = $this->repository->create(
+            'https://GitHub.com/Owner/Repo.git/',
+            'Repo',
+            'Owner',
+            []
+        );
+
+        $this->assertEquals('https://github.com/owner/repo', $analysis->repository_url);
     }
 }
